@@ -30,16 +30,9 @@ class Button(pygame.sprite.Sprite):
         pygame.draw.rect(surface, self.color, (5, 5, self.width - 10, self.height - 10), 2)
         self.screen.blit(surface, self.dist)
 
-
-DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 700, 700
-FPS = 100
-ALL_SPRITES = pygame.sprite.Group()
-
-
 # buttons = pygame.sprite.Group()
 # new_button = Button(screen, "Выйти", (10, 10), (100, 30), pygame.Color("orange"), buttons)
 # new_button = Button(screen, "Мастерская", (10, 40), (600, 130), (167, 96, 56), buttons)
 # new_button = Button(screen, "Достижения", (10, 250), (600, 130), (167, 96, 56), buttons)
 # new_button = Button(screen, "Настройки", (10, 460), (200, 70), pygame.Color("orange"), buttons)
 # new_button = Button(screen, "Выйти", (10, 540), (300, 100), pygame.Color("orange"), buttons)
-
