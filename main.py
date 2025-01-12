@@ -1,7 +1,4 @@
-import pygame
 from mainFlow import GridForge
-
-ALL_SPRITES = pygame.sprite.Group()
 
 
 def main():

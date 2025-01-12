@@ -36,29 +36,10 @@ FPS = 100
 ALL_SPRITES = pygame.sprite.Group()
 
 
-def main():
-    pygame.init()
-    clock = pygame.time.Clock()
-    screen = pygame.display.set_mode(DISPLAY_SIZE)
-    screen.fill(pygame.Color("black"))
-    buttons = pygame.sprite.Group()
-    new_button = Button(screen, "Выйти", (10, 10), (100, 30), pygame.Color("orange"), buttons)
-    new_button = Button(screen, "Мастерская", (10, 40), (600, 130), (167, 96, 56), buttons)
-    new_button = Button(screen, "Достижения", (10, 250), (600, 130), (167, 96, 56), buttons)
-    new_button = Button(screen, "Настройки", (10, 460), (200, 70), pygame.Color("orange"), buttons)
-    new_button = Button(screen, "Выйти", (10, 540), (300, 100), pygame.Color("orange"), buttons)
+# buttons = pygame.sprite.Group()
+# new_button = Button(screen, "Выйти", (10, 10), (100, 30), pygame.Color("orange"), buttons)
+# new_button = Button(screen, "Мастерская", (10, 40), (600, 130), (167, 96, 56), buttons)
+# new_button = Button(screen, "Достижения", (10, 250), (600, 130), (167, 96, 56), buttons)
+# new_button = Button(screen, "Настройки", (10, 460), (200, 70), pygame.Color("orange"), buttons)
+# new_button = Button(screen, "Выйти", (10, 540), (300, 100), pygame.Color("orange"), buttons)
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        pygame.display.flip()
-        clock.tick(FPS)
-
-    pygame.quit()
-
-
-if __name__ == '__main__':
-    main()

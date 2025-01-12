@@ -43,5 +43,6 @@ class DynamicPlate(PlateConstructor):
     def update_state(self):
         self.sprite.image = self.states_imgs[self.cur_state]
 
+
 class SolidPlate(PlateConstructor):
     pass

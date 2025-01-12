@@ -2,6 +2,7 @@ import pygame
 
 DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 600, 600
 FPS = 100
+ALL_SPRITES = pygame.sprite.Group()
 
 
 class Window:
@@ -40,7 +41,7 @@ class GridForge:
                 for subevent, action in (self.window_events | self.base_events).items():
                     if event.type == subevent:
                         action()
-
+            self.screen.blit(self.current_window.surface, (0, 0))
             pygame.display.flip()
             self.clock.tick(FPS)
 
