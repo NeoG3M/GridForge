@@ -28,12 +28,18 @@ class GridForge:
         black_window = Window(DISPLAY_SIZE)
         self.switch_window(black_window)
 
+        self.base_events = {}
+        self.window_events = {}
+
     def run_game(self):
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                for subevent, action in self.window_events | self.base_events:
+                    if event.type == subevent:
+                        action()
 
             pygame.display.flip()
             self.clock.tick(FPS)
@@ -41,3 +47,4 @@ class GridForge:
     def switch_window(self, new_window):
         self.current_window = new_window
         self.screen.blit(new_window.surface, (0, 0))
+        self.window_events = new_window.events
