@@ -12,6 +12,7 @@ class Window:
         elif isinstance(background, pygame.sprite.Sprite):
             pass
             #  TODO заполнение спрайта по центру
+        self.events = {}
 
     def add_widget(self, widget, dist):
         pass
