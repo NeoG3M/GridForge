@@ -5,10 +5,12 @@ from default_constaints import *
 class GridForge:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
 
         self.clock = pygame.time.Clock()
 
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
+        pygame.display.set_caption('GridForge')
         black_window = StartWindow()
         self.switch_window(black_window)
 
@@ -27,6 +29,8 @@ class GridForge:
             self.screen.blit(self.current_window.surface, (0, 0))
             pygame.display.flip()
             self.clock.tick(FPS)
+        pygame.quit()
+        pygame.mixer.quit()
 
     def switch_window(self, new_window: Window):
         self.current_window = new_window
