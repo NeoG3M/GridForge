@@ -1,0 +1,5 @@
+import pygame
+
+DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 600, 600
+FPS = 100
+ALL_SPRITES = pygame.sprite.Group()

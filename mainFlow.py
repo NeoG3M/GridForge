@@ -1,22 +1,5 @@
-import pygame
-
-DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 600, 600
-FPS = 100
-ALL_SPRITES = pygame.sprite.Group()
-
-
-class Window:
-    def __init__(self, size: tuple[float, float], background=pygame.color.Color('black')):
-        self.surface = pygame.Surface(size)
-        if isinstance(background, pygame.color.Color):
-            self.surface.fill(background)
-        elif isinstance(background, pygame.sprite.Sprite):
-            pass
-            #  TODO заполнение спрайта по центру
-        self.events = {}
-
-    def add_widget(self, widget, dist):
-        pass
+from Windows import *
+from default_constaints import *
 
 
 class GridForge:
@@ -26,7 +9,7 @@ class GridForge:
         self.clock = pygame.time.Clock()
 
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
-        black_window = Window(DISPLAY_SIZE)
+        black_window = StartWindow()
         self.switch_window(black_window)
 
         self.base_events = {}
