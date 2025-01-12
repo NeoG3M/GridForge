@@ -5,7 +5,7 @@ FPS = 100
 
 
 class Window:
-    def __init__(self, size, background=pygame.color.Color('black')):
+    def __init__(self, size: tuple[float, float], background=pygame.color.Color('black')):
         self.surface = pygame.Surface(size)
         if isinstance(background, pygame.color.Color):
             self.surface.fill(background)
@@ -37,14 +37,14 @@ class GridForge:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                for subevent, action in self.window_events | self.base_events:
+                for subevent, action in (self.window_events | self.base_events).items():
                     if event.type == subevent:
                         action()
 
             pygame.display.flip()
             self.clock.tick(FPS)
 
-    def switch_window(self, new_window):
+    def switch_window(self, new_window: Window):
         self.current_window = new_window
         self.screen.blit(new_window.surface, (0, 0))
         self.window_events = new_window.events
