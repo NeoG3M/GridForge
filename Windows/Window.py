@@ -1,4 +1,4 @@
-from default_constaints import *
+from CONSTANTS import *
 
 
 class Window:
@@ -9,6 +9,9 @@ class Window:
         elif isinstance(background, pygame.sprite.Sprite):
             self.surface.blit(background.image, (0, 0))
         self.events = {}
+
+    def update(self, event: pygame.event):
+        pass
 
     def add_widget(self, widget, dist):
         pass

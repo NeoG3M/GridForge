@@ -8,7 +8,7 @@ class Button(pygame.sprite.Sprite):
                  color: tuple[int, int, int] | pygame.Color,
                  *group):
         super().__init__(*group)
-
+        self.rect = pygame.rect.Rect(*dist, *size)
         self.screen = screen
         self.text = text
         self.dist = dist
