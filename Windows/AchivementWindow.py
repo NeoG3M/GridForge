@@ -1,5 +1,5 @@
 from CONSTANTS import *
-from Window import Window
+from .Window import Window
 
 
 class AchievementWindow(Window):
