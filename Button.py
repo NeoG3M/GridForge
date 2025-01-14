@@ -5,7 +5,7 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, screen, text,
                  dist: tuple[int, int],
                  size: tuple[int, int],
-                 color: tuple[int, int, int] | pygame.Color,
+                 color,
                  *group):
         super().__init__(*group)
         self.rect = pygame.rect.Rect(*dist, *size)
