@@ -2,5 +2,5 @@ from .Window import Window
 
 
 class Settings(Window):
-    def __init__(self, size):
-        super().__init__(size)
+    def __init__(self, parent, size):
+        super().__init__(parent, size=size)

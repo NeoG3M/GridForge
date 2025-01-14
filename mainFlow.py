@@ -12,7 +12,7 @@ class GridForge:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
         pygame.display.set_caption('GridForge')
-        black_window = StartWindow()
+        black_window = StartWindow(self)
         self.switch_window(black_window)
 
         self.base_events = {}
