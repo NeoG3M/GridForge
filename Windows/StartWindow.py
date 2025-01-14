@@ -16,6 +16,26 @@ class StartWindow(Window):
 
     def __init__(self):
         super().__init__(background=self.__background_sprite)
+        self.buttons = self.create_buttons()
+        for btn in self.buttons:
+            btn.draw()
+
+    def update(self, event: pygame.event):
+        """
+        This method connect buttons with their funcs
+        :param event: event
+        :return: pass
+        """
+        for button in self.buttons:
+            if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
+                    button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
+                self.__BUTTON_DICT.get(button.text, lambda: None)()
+
+    def create_buttons(self) -> pygame.sprite.Group:
+        """
+        This method create buttons for this window
+        :return: Group of buttons
+        """
         buttons = pygame.sprite.Group()
         Button(self.surface, "Выйти", (DISPLAY_SIZE[0] - 160, 20), (150, 50), pygame.Color("orange"),
                buttons)
@@ -24,12 +44,4 @@ class StartWindow(Window):
         Button(self.surface, "Достижения", (int(DISPLAY_SIZE[0] * 0.72), int(DISPLAY_SIZE[1] * 0.80)), (200, 90),
                (167, 96, 56), buttons)
         Button(self.surface, "Настройки", (10, 10), (180, 70), pygame.Color("orange"), buttons)
-        for btn in buttons:
-            btn.draw()
-        self.buttons = buttons
-
-    def update(self, event: pygame.event):
-        for button in self.buttons:
-            if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
-                    button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
-                self.__BUTTON_DICT.get(button.text, lambda: None)()
+        return buttons
