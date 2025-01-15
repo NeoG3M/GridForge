@@ -1,23 +1,14 @@
-import sys
-
-import pygame
-
-
-def terminate():
-    pygame.quit()
-    sys.exit()
+from CONSTANTS import *
 
 
 class GridForge:
     __GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3}
     __WINDOWS = {'start': None}
-    DISPLAY_SIZE = (600, 600)
-    FPS = 100
 
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode(self.DISPLAY_SIZE)
+        self.screen = pygame.display.set_mode(DISPLAY_SIZE)
         self.current_window = None
 
     def run_game(self):
