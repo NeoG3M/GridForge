@@ -9,13 +9,14 @@ class StartWindow(Window):
     __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
     __background_sprite.image = pygame.image.load(f"Windows/Windows_back/StartWindow.jpg")
     __background_sprite.rect = __background_sprite.image.get_rect()
-    __BUTTON_DICT: dict = {'Выйти': terminate}
+    __BUTTON_DICT: dict = {'Выйти': terminate,
+                           'Мастерская': StartWindow.}
     """
     This class realizes a start window of the game, where you can 
     """
 
     def __init__(self):
-        super().__init__(background=self.__background_sprite)
+        super().__init__(background=self.__background_sprite.image)
         buttons = pygame.sprite.Group()
         Button(self.surface, "Выйти", (DISPLAY_SIZE[0] - 160, 20), (150, 50), pygame.Color("orange"),
                buttons)
