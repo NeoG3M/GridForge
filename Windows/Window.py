@@ -1,28 +1,22 @@
 from CONSTANTS import *
-
+from Windows import (GameWindow, Settings, AchievementWindow)
 
 class Window:
-    def __init__(self, background=pygame.Color('black')):
-        self.surface = pygame.Surface(DISPLAY_SIZE)
+    def __init__(self, size: tuple[float, float] = DISPLAY_SIZE, background=pygame.color.Color('black')):
+        self.surface = pygame.Surface(size)
         if isinstance(background, pygame.color.Color):
             self.surface.fill(background)
         elif isinstance(background, pygame.sprite.Sprite):
-            pass
-        self.events = {}
-        self.running = True
+            self.surface.blit(background.image, (0, 0))
+        self.events = {'Выйти': terminate, 'Играть': lambda: self.switch_window(GameWindow(self.parent)),
+                       'Настройки': lambda: self.switch_window(Settings(self.parent, (600, 600))),
+                       'Достижения': lambda: self.switch_window(AchievementWindow(self.parent))}
 
-    def run(self):
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    terminate()
-                for subevent, action in self.events.items():
-                    if event.type == subevent:
-                        action()
-            pygame.display.flip()
+    def update(self, event: pygame.event):
+        pass
 
-    def stop(self):
-        self.running = False
+    def add_widget(self, widget, dist):
+        pass
 
     def add_action(self, event, action):
         self.events[event] = action
