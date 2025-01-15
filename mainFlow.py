@@ -9,6 +9,8 @@ def terminate():
 
 
 class GridForge:
+    __GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3}
+    __WINDOWS = {'start': None}
     DISPLAY_SIZE = (600, 600)
     FPS = 100
 
@@ -19,55 +21,38 @@ class GridForge:
         self.current_window = None
 
     def run_game(self):
-        self.switch_window(self.MenuWindow(self.DISPLAY_SIZE))
-        while self.current_window:
-            self.current_window.run()
-            self.clock.tick(self.FPS)
+        self.game_running = True
+        self.switch_window('start')
+        while self.game_running: # основной цикл игры
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                if event.type == self.__GAME_EVENTS['SWITCH_WINDOW']:
+                    self.switch_window(event.name, event.arg)
 
-    def switch_window(self, new_window):
+    def switch_window(self, new_window, arg=()):
         if self.current_window:
             self.current_window.stop()
-        self.current_window = new_window
-        self.screen.blit(new_window.surface, (0, 0))
+        self.current_window = self.__WINDOWS[new_window](*arg)
 
-    class Window:
-        def __init__(self, size, background='black'):
-            self.surface = pygame.Surface(size)
-            self.surface.fill(pygame.Color(background))
-            self.events = {}
-            self.running = True
 
-        def run(self):
-            while self.running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        terminate()
-                    for subevent, action in self.events.items():
-                        if event.type == subevent:
-                            action()
-                pygame.display.flip()
+class Window:
+    def __init__(self, gf_game: GridForge, background='black'):
+        self.gridforge = gf_game
+        self.screen = self.gridforge.screen
+        self.events = {}
 
-        def stop(self):
-            self.running = False
+    def stop(self, *args):
+        pass
 
-        def add_action(self, event, action):
-            self.events[event] = action
+    def __add_action(self, event, action):
+        self.events[event] = action
 
-        def add_widget(self, widget):
-            self.surface.blit(widget.surface, widget.position)
-            if widget.events:
-                for event, action in widget.events.items():
-                    self.add_action(event, action)
-
-    class LevelWindow(Window):
-        def __init__(self, size, background='black'):
-            super().__init__(size, background)
-            # Add level-specific initialization here
-
-    class MenuWindow(Window):
-        def __init__(self, size, background='black'):
-            super().__init__(size, background)
-            # Add menu-specific initialization here
+    def add_widget(self, widget):
+        #  TODO Добавление виджета
+        if widget.events:
+            for event, action in widget.events.items():
+                self.__add_action(event, action)
 
 
 # Example usage
