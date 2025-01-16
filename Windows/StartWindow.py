@@ -25,10 +25,12 @@ class StartWindow(Window):
         :param event: event
         :return: pass
         """
-        for button in self.buttons:
-            if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
-                    button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
-                self.events.get(button.text, lambda: None)()
+        super().update(event)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for button in self.buttons:
+                if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
+                        button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
+                    self.events.get(button.text, lambda: None)()
 
     def create_buttons(self) -> pygame.sprite.Group:
         """
