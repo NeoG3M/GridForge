@@ -19,15 +19,17 @@ class GridForge:
         for event in pygame.event.get():
             self.current_window.update(event)
 
+    def draw(self):
+        self.current_window.draw()
+
     def run_game(self):
         running = True
         while running:
             self.catch_events()
-            self.screen.blit(self.current_window.surface, (0, 0))
+            self.draw()
             pygame.display.flip()
             self.clock.tick(FPS)
         terminate()
 
     def switch_window(self, new_window: Window):
         self.current_window = new_window
-        self.screen.blit(new_window.surface, (0, 0))

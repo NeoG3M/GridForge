@@ -14,6 +14,7 @@ class Button(pygame.sprite.Sprite):
         self.dist = dist
         self.color = color
         self.size = self.width, self.height = size
+        self.image: pygame.image = None
         self.draw()
 
     def draw(self):
@@ -28,3 +29,4 @@ class Button(pygame.sprite.Sprite):
         surface.blit(text, (text_x, text_y))
         pygame.draw.rect(surface, self.color, (5, 5, self.width - 10, self.height - 10), 2)
         self.screen.blit(surface, self.dist)
+        self.image = surface
