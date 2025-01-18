@@ -1,7 +1,7 @@
 import pygame.sprite
 
-from static_window_sprites.Button import Button as Btn
 from CONSTANTS import *
+from static_window_sprites.Button import Button as Btn
 
 
 class Window:

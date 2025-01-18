@@ -14,7 +14,7 @@ class PlateConstructor:
         self.sprite.rect = self.image.get_rect()
 
     def get_info(self):
-        return None
+        pass
 
 
 class DynamicPlate(PlateConstructor):
