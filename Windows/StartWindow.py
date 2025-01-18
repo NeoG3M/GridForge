@@ -1,6 +1,6 @@
 import pygame
 
-from Button import Button
+from static_window_sprites import Button
 from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE
 from .Window import Window
 
