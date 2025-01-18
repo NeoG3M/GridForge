@@ -6,7 +6,7 @@ from CONSTANTS import *
 
 class Window:
     def __init__(self, parent, size: tuple[float, float] = DISPLAY_SIZE,
-                 background: pygame.Color | pygame.sprite.Sprite | str = pygame.color.Color('black'),
+                 background: pygame.Color | pygame.sprite.Sprite | str | tuple = pygame.color.Color('black'),
                  delta: tuple[int, int] = (0, 0)):
 
         from Windows import (GameWindow, Settings, AchievementWindow, StartWindow)
@@ -32,20 +32,22 @@ class Window:
             if x1 <= x <= x1 + width and y1 <= y <= y1 + height:
                 self.events['Главное меню']()
 
-    def add_back(self, background: str | pygame.sprite.Sprite | pygame.Color):
+    def add_back(self, background: str | pygame.sprite.Sprite | pygame.Color | tuple):
         if isinstance(background, str):
             background = pygame.Color(background)
         if isinstance(background, pygame.color.Color):
             self.surface.fill(background)
         elif isinstance(background, pygame.sprite.Sprite):
             self.surface.blit(background.image, self.delta)
+        elif isinstance(background, tuple):
+            self.surface.fill(background)
 
     def switch_window(self, new_window):
         self.parent.switch_window(new_window)
 
     def create_buttons(self):
         buttons = pygame.sprite.Group()
-        Btn(self.surface, "Выйти", (self.surface.get_rect().width - 160, 20), (150, 50), pygame.Color("orange"),
+        Btn(self.surface, "Выйти", (self.surface.get_rect().width - 160, 20), (150, 50), pygame.Color((208, 122, 240)),
             buttons)
         return buttons
 

@@ -37,14 +37,13 @@ class StartWindow(Window):
         This method create buttons for this window
         :return: Group of buttons
         """
-        buttons = pygame.sprite.Group()
-        Button(self.surface, "Выйти", (DISPLAY_SIZE[0] - 160, 20), (150, 50), pygame.Color("orange"),
-               buttons)
+        buttons = super().create_buttons()
+
         Button(self.surface, "Мастерская", (int(DISPLAY_SIZE[0] * 0.72), int(DISPLAY_SIZE[1] * 0.65)), (200, 90),
                (167, 96, 56), buttons)
         Button(self.surface, "Достижения", (int(DISPLAY_SIZE[0] * 0.72), int(DISPLAY_SIZE[1] * 0.80)), (200, 90),
                (167, 96, 56), buttons)
-        Button(self.surface, "Настройки", (10, 20), (150, 50), pygame.Color("orange"), buttons)
+        Button(self.surface, "Настройки", (10, 20), (150, 50), pygame.Color((208, 122, 240)), buttons)
         Button(self.surface, "Играть", (int(DISPLAY_SIZE[0] * 0.35), int(DISPLAY_SIZE[1] * 0.6)), (250, 70),
-               pygame.Color('orange'), buttons)
+               pygame.Color((208, 122, 240)), buttons)
         return buttons
