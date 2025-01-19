@@ -16,19 +16,15 @@ class Button(pygame.sprite.Sprite):
             color = pygame.Color(color)
         self.color = color
         self.size = self.width, self.height = size
-        self.image: pygame.image = None
-        self.draw()
+        self.image: pygame.image = self.create()
 
-    def draw(self):
+    def create(self) -> pygame.Surface:
         surface = pygame.Surface((self.width, self.height))
         surface.fill(pygame.Color("black"))
-
         font = pygame.font.Font(None, int(self.size[1] * 0.5))
         text = font.render(self.text, True, self.color)
         text_x = self.width // 2 - text.get_width() // 2
         text_y = self.height // 2 - text.get_height() // 2
-
         surface.blit(text, (text_x, text_y))
         pygame.draw.rect(surface, self.color, (5, 5, self.width - 10, self.height - 10), 2)
-        self.screen.blit(surface, self.dist)
-        self.image = surface
+        return surface
