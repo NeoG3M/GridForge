@@ -9,7 +9,7 @@ class Window:
                  background: pygame.Color | pygame.sprite.Sprite | str | tuple = pygame.color.Color('black'),
                  delta: tuple[int, int] = (0, 0)):
 
-        from Windows import (GameWindow, Settings, AchievementWindow, StartWindow)
+        from Windows import (GameWindow, Settings, AchievementWindow, StartWindow, WorkshopWindow)
         from mainFlow import GridForge
         self.parent: GridForge = parent
         self.surface = pygame.Surface(size)
@@ -17,7 +17,8 @@ class Window:
         self.events = {'Выйти': terminate, 'Играть': lambda: self.switch_window(GameWindow(self.parent)),
                        'Настройки': lambda: self.switch_window(Settings(self.parent, (600, 600))),
                        'Достижения': lambda: self.switch_window(AchievementWindow(self.parent)),
-                       'Главное меню': lambda: self.switch_window(StartWindow(self.parent))}
+                       'Главное меню': lambda: self.switch_window(StartWindow(self.parent)),
+                       'Мастерская': lambda: self.switch_window(WorkshopWindow(self.parent))}
         self.buttons = self.create_buttons()
         self.delta = delta
         self.draw()
