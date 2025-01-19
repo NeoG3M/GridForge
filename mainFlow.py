@@ -1,3 +1,5 @@
+import ctypes
+
 import pygame.event
 
 from CONSTANTS import *
@@ -5,8 +7,11 @@ from Windows import *
 
 
 class GridForge:
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('mycompany.myproduct.subproduct.version')
+
     def __init__(self):
         pygame.init()
+
         pygame.mixer.init()
         self.current_window: Window | None = None
         self.clock = pygame.time.Clock()

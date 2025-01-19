@@ -1,7 +1,7 @@
 import pygame
 
-from static_window_sprites import Button
 from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE
+from static_window_sprites import Button
 from .Window import Window
 
 
@@ -17,6 +17,13 @@ class StartWindow(Window):
         self.delta = 0, 0
         super().__init__(parent, background=self.__background_sprite)
         self.buttons = self.create_buttons()
+        from Windows import (GameWindow, Settings, AchievementWindow, WorkshopWindow)
+        self.local_events = {key: value for key, value in
+                             ({'Играть': lambda: self.switch_window(GameWindow(self.parent)),
+                               'Настройки': lambda: self.switch_window(Settings(self.parent, (600, 600))),
+                               'Достижения': lambda: self.switch_window(AchievementWindow(self.parent)),
+                               'Мастерская': lambda: self.switch_window(
+                                   WorkshopWindow(self.parent))} | self.events).items()}
 
     def update(self, event: pygame.event):
         """
@@ -29,8 +36,9 @@ class StartWindow(Window):
             for button in self.buttons:
                 if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
                         button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
-                    self.events.get(button.text, lambda: None)()
+                    self.local_events.get(button.text, lambda: None)()
                     break
+
 
     def create_buttons(self) -> pygame.sprite.Group:
         """
