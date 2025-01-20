@@ -23,21 +23,11 @@ class Settings(Window):
         return buttons
 
     def main_settings(self):
-        pass
+        print(self.main_settings.__name__)
 
     def display_settings(self):
-        pass
+        print(self.display_settings.__name__)
 
     def sound_settings(self):
-        pass
+        print(self.sound_settings.__name__)
 
-    def update(self, event: pygame.event):
-        super().update(event)
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for button in self.buttons:
-                x, y, width, height = button.rect.x, button.rect.y, button.rect.width, button.rect.height
-                x += self.delta[0]
-                y += self.delta[1]
-                if x <= event.pos[0] <= x + width and y <= event.pos[1] <= y + height:
-                    self.local_events.get(button.text, lambda: None)()
-    # TODO: should optimize update func superclass

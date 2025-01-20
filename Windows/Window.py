@@ -18,6 +18,7 @@ class Window:
         self.events = {'Выйти': terminate, 'Главное меню': lambda: self.switch_window(StartWindow(self.parent))}
         self.buttons = self.create_buttons()
         self.delta = delta
+        self.local_events = dict()
         self.draw()
 
     def update(self, event: pygame.event):
@@ -29,6 +30,13 @@ class Window:
             width, height = self.buttons.sprites()[0].rect.size
             if x1 <= x <= x1 + width and y1 <= y <= y1 + height:
                 self.events['Главное меню']()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for button in self.buttons:
+                x, y, width, height = button.rect.x, button.rect.y, button.rect.width, button.rect.height
+                x += self.delta[0]
+                y += self.delta[1]
+                if x <= event.pos[0] <= x + width and y <= event.pos[1] <= y + height:
+                    self.local_events.get(button.text, lambda: None)()
 
     def add_back(self, background: str | pygame.sprite.Sprite | pygame.Color | tuple):
         if isinstance(background, str):

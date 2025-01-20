@@ -25,21 +25,6 @@ class StartWindow(Window):
                                'Мастерская': lambda: self.switch_window(
                                    WorkshopWindow(self.parent))} | self.events).items()}
 
-    def update(self, event: pygame.event):
-        """
-        This method connect buttons with their funcs
-        :param event: event
-        :return: None
-        """
-        super().update(event)
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for button in self.buttons:
-                if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
-                        button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
-                    self.local_events.get(button.text, lambda: None)()
-                    break
-
-
     def create_buttons(self) -> pygame.sprite.Group:
         """
         This method create buttons for this window
