@@ -1,3 +1,5 @@
+import sys
+
 from mainFlow import GridForge
 
 
@@ -8,3 +10,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    sys.exit()

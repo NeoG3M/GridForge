@@ -1,8 +1,8 @@
 import pygame
 
-from Button import Button
+from Widgets.Button import Button
 from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE, terminate
-from .Window import Window
+from Windows.Window import Window
 
 
 class StartWindow(Window):
@@ -16,34 +16,18 @@ class StartWindow(Window):
 
     def __init__(self, parent):
         super().__init__(parent, background=self.__background_sprite)
-        self.buttons = self.create_buttons()
-        for btn in self.buttons:
-            btn.draw()
+        self.create_widgets()
+        self.add_background(self.__background_sprite)
 
-    def update(self, event: pygame.event):
-        """
-        This method connect buttons with their funcs
-        :param event: event
-        :return: pass
-        """
-        for button in self.buttons:
-            if button.rect.x <= event.pos[0] <= button.rect.x + button.rect.width and \
-                    button.rect.y <= event.pos[1] <= button.rect.y + button.rect.height:
-                self.events.get(button.text, lambda: None)()
+    def check_mousebuttondown_event(self, event: pygame.event):
+        super().check_mousebuttondown_event(event)
+        # mouse_pos = event.pos
+        # for button in self.buttons:
+        #     if button.rect.collidepoint(mouse_pos):
+        #         self.__BUTTON_DICT[button.text]()
 
-    def create_buttons(self) -> pygame.sprite.Group:
-        """
-        This method create buttons for this window
-        :return: Group of buttons
-        """
-        buttons = pygame.sprite.Group()
-        Button(self.surface, "Выйти", (DISPLAY_SIZE[0] - 160, 20), (150, 50), pygame.Color("orange"),
-               buttons)
-        Button(self.surface, "Мастерская", (int(DISPLAY_SIZE[0] * 0.72), int(DISPLAY_SIZE[1] * 0.65)), (200, 90),
-               (167, 96, 56), buttons)
-        Button(self.surface, "Достижения", (int(DISPLAY_SIZE[0] * 0.72), int(DISPLAY_SIZE[1] * 0.80)), (200, 90),
-               (167, 96, 56), buttons)
-        Button(self.surface, "Настройки", (10, 20), (150, 50), pygame.Color("orange"), buttons)
-        Button(self.surface, "Играть", (int(DISPLAY_SIZE[0] * 0.35), int(DISPLAY_SIZE[1] * 0.6)), (250, 70),
-               pygame.Color('orange'), buttons)
-        return buttons
+    def create_widgets(self):
+        exit_event = lambda: pygame.event.post(pygame.event.Event(self.gridforge.get_event('SHUTDOWN')))
+        self.widgets.add_widget(
+            Button((DISPLAY_SIZE[0] - 160, 20, 150, 50), pygame.Color("orange"), 'Выйти', on_click=exit_event))
+
