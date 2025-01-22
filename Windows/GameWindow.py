@@ -1,22 +1,18 @@
+import pygame.sprite
+
 from .Window import Window
 import csv
-
-
-class MapUtilit:
-    def __init__(self):
-        self.map = []
-
-    def unpack_map(self, filename):
-        with open(filename, 'r', encoding='utf-8') as level_file:
-            reader = csv.reader(level_file, delimiter=';')
-            for i, row in enumerate(reader):
-                print(i, row)
+import plates
+from Widgets.Field import Field, Camera
 
 
 class GameWindow(Window):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, gf_game):
+        super().__init__(gf_game)
         self.create_widgets()
         self.add_background('darkgray')
-        mu = MapUtilit()
-        mu.unpack_map('level/level_0/map.csv')
+        self.sprites = pygame.sprite.Group()
+
+
+    def create_widgets(self):
+        self.widgets.add_widget(Field((400, 50, 640, 480), level='level/level_0/map.csv'))

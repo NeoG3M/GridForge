@@ -6,12 +6,12 @@ PLATE_SIZE = 32
 class PlateConstructor:
     FACING = {'N': 0, 'E': 90, 'S': 180, 'W': 270}
 
-    def __init__(self, img_name: str, rotation: str, group):
+    def __init__(self, img_name: str, rotation: str, x, y, group):
         self.sprite = pygame.sprite.Sprite(group)
         self.image = pygame.image.load(f'plates/{img_name}.png').convert_alpha()
 
         self.sprite.image = pygame.transform.rotate(self.image, self.FACING[rotation])
-        self.sprite.rect = self.image.get_rect()
+        self.sprite.rect = pygame.Rect(x * PLATE_SIZE, y * PLATE_SIZE, PLATE_SIZE, PLATE_SIZE)
 
     def get_info(self):
         return None
