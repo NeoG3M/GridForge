@@ -14,12 +14,6 @@ class Button(Widget):
 
     def draw(self, surface):
         super().draw(surface)
-        text_surf = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surf.get_rect(center=self.rect.center)
-        surface.blit(text_surf, text_rect)
-
-    def new_draw(self, surface):
-        super().draw(surface)
         text_surface = pygame.Surface((self.rect.width, self.rect.height))
         text_surface.fill(self.color)
 
