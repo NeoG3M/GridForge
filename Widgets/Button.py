@@ -6,6 +6,8 @@ from math import ceil
 
 class Button(Widget):
     def __init__(self, rect, color, text, text_color=pygame.Color('black'), on_click=None):
+        """Инициализация кнопки"""
+
         super().__init__(rect, color, on_click)
 
         self.font = pygame.font.Font(None, 36)
@@ -13,6 +15,8 @@ class Button(Widget):
         self.text_color = text_color
 
     def draw(self, surface):
+        """Рисование кнопки"""
+
         super().draw(surface)
         text_surface = pygame.Surface((self.rect.width, self.rect.height))
         text_surface.fill(self.color)
@@ -32,3 +36,10 @@ class Button(Widget):
             self.rect.height - frame_border * 2), 2
         )
         surface.blit(text_surface, (self.rect.x, self.rect.y))
+
+    def handle_event(self, event):
+        """Обработка события нажатия на кнопку"""
+
+        if (event.type == pygame.MOUSEBUTTONDOWN and
+                self.rect.collidepoint(event.pos)):
+            pass
