@@ -3,7 +3,8 @@ import pygame.sprite
 from .Window import Window
 import csv
 import plates
-from Widgets.Field import Field, Camera
+from Widgets.Field import Field
+from Widgets.widgetBlock import WidgetBlock
 
 
 class GameWindow(Window):
@@ -15,4 +16,5 @@ class GameWindow(Window):
 
 
     def create_widgets(self):
-        self.widgets.add_widget(Field((400, 50, 640, 480), level='level/level_0/map.csv'))
+        self.widgets.add_widget(Field((400, 50, 700, 560), level='level/level_0/map.csv'))
+        self.widgets.add_widget(WidgetBlock((20, 50, 290, 560)))

@@ -21,7 +21,7 @@ class Camera:
 
         self.offset_x = 0  # Сдвиг камеры по X
         self.offset_y = 0  # Сдвиг камеры по Y
-        self.zoom = 2  # Масштаб камеры
+        self.zoom = 3  # Масштаб камеры
 
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
@@ -111,7 +111,7 @@ class Camera:
 
 class Field(Widget):
     __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
-                'E1': {'img_name': 'E1', 'rotation': 'N'}, 'E2': {'img_name': 'E2', 'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0}}
+                'E': {'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0}}
 
     def __init__(self, rect, level: str):
         super().__init__(rect)
@@ -161,6 +161,6 @@ class Field(Widget):
         if code.startswith('W'):
             return plates.SolidPlate(**self.__plates[code[:-1]], x=x, y=y, group=self.sprites)
         elif code.startswith('E'):
-            return plates.PlateConstructor(x=x, y=y, **self.__plates[code], group=self.sprites)
+            return plates.PlateConstructor(x=x, y=y, img_name=code, **self.__plates['E'], group=self.sprites)
         elif code.startswith('TB'):
             return plates.TowerPlate(**self.__plates[code], group=self.sprites)

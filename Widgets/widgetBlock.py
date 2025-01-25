@@ -59,7 +59,7 @@ from Widgets.widgetGroup import WidgetGroup
 class WidgetBlock(Widget):
     GRID, VERTICAL, HORIZONTAL = 'grid', 'vertical', 'horizontal'
 
-    def __init__(self, rect, color=pygame.Color('gray'), layout_mode=GRID, on_click=None):
+    def __init__(self, rect, color=pygame.Color('#3e1c03'), layout_mode=GRID, on_click=None):
         super().__init__(rect, color, on_click)
         self.widgets = WidgetGroup()
         self.scroll_offset = 0
