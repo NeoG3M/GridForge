@@ -37,9 +37,3 @@ class Button(Widget):
         )
         surface.blit(text_surface, (self.rect.x, self.rect.y))
 
-    def handle_event(self, event):
-        """Обработка события нажатия на кнопку"""
-
-        if (event.type == pygame.MOUSEBUTTONDOWN and
-                self.rect.collidepoint(event.pos)):
-            pass
