@@ -25,6 +25,7 @@ class Camera:
 
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
+        self.last_global_mouse_pos = (0, 0)
 
     def handle_event(self, event):
         """
@@ -37,13 +38,13 @@ class Camera:
                 self.dragging = True
                 self.last_mouse_pos = event.pos
 
-
         elif event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
                 self.dragging = False
                 self.last_mouse_pos = None
 
         elif event.type == pygame.MOUSEMOTION:
+            self.last_global_mouse_pos = event.pos
             if self.dragging:
                 dx = event.pos[0] - self.last_mouse_pos[0]
                 dy = event.pos[1] - self.last_mouse_pos[1]
@@ -54,9 +55,10 @@ class Camera:
 
         elif event.type == pygame.MOUSEWHEEL:
             # Масштабирование
-            scale_factor = 0.25 if event.y > 0 else -0.25
-            self.zoom += scale_factor
-            self.zoom = max(1.5, min(self.zoom, 4))
+            if self.widget_rect.collidepoint(self.last_global_mouse_pos):
+                scale_factor = 0.25 if event.y > 0 else -0.25
+                self.zoom += scale_factor
+                self.zoom = max(1.5, min(self.zoom, 4))
 
     def clamp_camera(self):
         max_offset_x = len(self.map_matrix[0]) * 32 - self.widget_rect.width / self.zoom

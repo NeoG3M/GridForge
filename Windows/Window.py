@@ -16,6 +16,7 @@ class Window:
         pass
 
     def update(self, event):
+        self.screen.fill(pygame.Color('black'))
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
         if event.type == pygame.MOUSEBUTTONDOWN:

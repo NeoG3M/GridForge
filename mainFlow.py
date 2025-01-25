@@ -18,7 +18,7 @@ class GridForge:
 
     def run_game(self):
         self.game_running = True
-        self.switch_window('start', self)
+        self.switch_window('level', self)
         while self.game_running:  # основной цикл игры
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == self.__GAME_EVENTS['SHUTDOWN']:
