@@ -21,7 +21,7 @@ class Camera:
 
         self.offset_x = 0  # Сдвиг камеры по X
         self.offset_y = 0  # Сдвиг камеры по Y
-        self.zoom = 1.6  # Масштаб камеры
+        self.zoom = 2  # Масштаб камеры
 
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
@@ -33,19 +33,13 @@ class Camera:
         :param event: событие pygame.Event.
         """
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1 and self.widget_rect.collidepoint(event.pos):  # Левая кнопка мыши
+            if event.button == 1 and self.widget_rect.collidepoint(event.pos) and not self.field.is_dragging_unit:
                 self.dragging = True
-                print("draggin'")
                 self.last_mouse_pos = event.pos
 
-            elif event.button == 4:  # Прокрутка вверх (увеличение масштаба)
-                self.zoom = round(min(self.zoom + 0.1, 2.5), 2)
-
-            elif event.button == 5:  # Прокрутка вниз (уменьшение масштаба)
-                self.zoom = round(max(self.zoom - 0.1, 1), 2)
 
         elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:  # Левая кнопка мыши
+            if event.button == 1:
                 self.dragging = False
                 self.last_mouse_pos = None
 
@@ -60,9 +54,9 @@ class Camera:
 
         elif event.type == pygame.MOUSEWHEEL:
             # Масштабирование
-            scale_factor = 1.1 if event.y > 0 else 0.9
-            self.zoom *= scale_factor
-            self.zoom = max(0.5, min(self.zoom, 3.0))  # Ограничиваем масштаб от 0.5 до 3.0
+            scale_factor = 0.25 if event.y > 0 else -0.25
+            self.zoom += scale_factor
+            self.zoom = max(1.5, min(self.zoom, 4))
 
     def clamp_camera(self):
         max_offset_x = len(self.map_matrix[0]) * 32 - self.widget_rect.width / self.zoom
@@ -77,10 +71,10 @@ class Camera:
         :param rect: pygame.Rect.
         :return: преобразованный pygame.Rect.
         """
-        x = (rect.x - self.offset_x) * self.zoom + self.widget_rect.x
-        y = (rect.y - self.offset_y) * self.zoom + self.widget_rect.y
-        w = rect.width * self.zoom
-        h = rect.height * self.zoom
+        x = round((rect.x - self.offset_x) * self.zoom, 1)
+        y = round((rect.y - self.offset_y) * self.zoom, 1)
+        w = round(rect.width * self.zoom, 1)
+        h = round(rect.height * self.zoom, 1)
         return pygame.Rect(x, y, w, h)
 
     def render(self, surface):
@@ -116,7 +110,8 @@ class Camera:
 
 
 class Field(Widget):
-    __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},'E1': {'img_name': 'E1', 'rotation': 'N'}}
+    __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
+                'E1': {'img_name': 'E1', 'rotation': 'N'}, 'E2': {'img_name': 'E2', 'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0}}
 
     def __init__(self, rect, level: str):
         super().__init__(rect)
@@ -124,18 +119,32 @@ class Field(Widget):
         self.surface = pygame.Surface((self.rect.width, self.rect.height))
         self.sprites = pygame.sprite.Group()
         self.level_map = self.unpack_map(level)
+        self.is_dragging_unit = False  # Флаг, указывающий, что игрок перетаскивает plate, башню или инструмент
         self.camera = Camera(self)
-
 
     def handle_event(self, event):
         self.camera.handle_event(event)
         super().handle_event(event)
 
+    def check_cell(self, event, unit):
+        cell = self.get_cell(event.pos)
+        if cell:
+            self.level_map[cell[1]][cell[0]].can_use_unit(unit)
+
+    def get_cell(self, mouse_pos):
+
+        x_mouse, y_mouse = mouse_pos
+        if self.rect.collidepoint(mouse_pos):
+            field_top_x, field_top_y = self.rect.topleft
+            x_cell = (x_mouse - field_top_x) // (32 * self.camera.zoom)
+            y_cell = (y_mouse - field_top_y) // (32 * self.camera.zoom)
+            return x_cell, y_cell
+        return None
+
     def draw(self, surface):
         super().draw(surface)
         self.camera.render(self.surface)
         surface.blit(self.surface, self.rect)
-
 
     def unpack_map(self, filename):
         level = []
@@ -153,3 +162,5 @@ class Field(Widget):
             return plates.SolidPlate(**self.__plates[code[:-1]], x=x, y=y, group=self.sprites)
         elif code.startswith('E'):
             return plates.PlateConstructor(x=x, y=y, **self.__plates[code], group=self.sprites)
+        elif code.startswith('TB'):
+            return plates.TowerPlate(**self.__plates[code], group=self.sprites)

@@ -16,6 +16,12 @@ class PlateConstructor:
     def get_info(self):
         return None
 
+    def can_use_unit(self, unit):
+        return False
+
+    def is_solid(self):
+        return False
+
 
 class DynamicPlate(PlateConstructor):
     def __init__(self, img_name: str, states: int, rotation: str, group):
@@ -45,4 +51,28 @@ class DynamicPlate(PlateConstructor):
 
 
 class SolidPlate(PlateConstructor):
-    pass
+    def is_solid(self):
+        return True
+
+
+class TowerPlate(DynamicPlate):
+    def __init__(self, level, img_name: str, states: int, rotation: str, group):
+        super().__init__(img_name, states, rotation, group)
+        self.tower = None
+        self.tower_hp = None
+        if level == 0:
+            self.max_consumption = 0
+        elif level == 1:
+            self.max_consumption = 25
+        elif level == 2:
+            self.max_consumption = 40
+        elif level == 3:
+            self.max_consumption = 80
+
+    def place_tower(self, tower):
+        self.tower = tower
+        self.tower_hp = tower.maxhp
+        self.switch_state(1)
+
+    def get_hp(self):
+        return self.tower_hp
