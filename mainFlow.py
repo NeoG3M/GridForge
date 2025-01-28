@@ -1,5 +1,3 @@
-import pygame
-
 from CONSTANTS import *
 from Windows.StartWindow import StartWindow
 
@@ -16,9 +14,9 @@ class GridForge:
         self.current_window = None
 
     def run_game(self):
-        self.game_running = True
+        game_running = True
         self.switch_window('start', self)
-        while self.game_running:  # основной цикл игры
+        while game_running:  # основной цикл игры
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == self.__GAME_EVENTS['SHUTDOWN']:
                     terminate()
