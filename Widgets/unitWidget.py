@@ -1,7 +1,8 @@
 import pygame
 
-from Widgets.widget import Widget
 from Widgets.textwindow_widget import TextWindowWidget
+from Widgets.widget import Widget
+
 
 class unitWidget(Widget):
     def __init__(self, rect, unit, color=pygame.Color('orange')):
@@ -33,6 +34,7 @@ class unitWidget(Widget):
 
         font = pygame.font.Font(None, int(self.rect.w * 0.65))
         text = font.render(self.unit.name, True, pygame.Color('black'))
-        surface.blit(pygame.transform.scale(text, (self_rect.w - 10, self_rect.h - self_rect.w)), (self_rect.bottomleft[0] + 5, self_rect.bottomleft[1] - (self_rect.h - self_rect.w)))
+        surface.blit(pygame.transform.scale(text, (self_rect.w - 10, self_rect.h - self_rect.w)),
+                     (self_rect.bottomleft[0] + 5, self_rect.bottomleft[1] - (self_rect.h - self_rect.w)))
         if self.hovered and self.unit.description:
             TextWindowWidget((*pygame.mouse.get_pos(), 150, 100), self.unit.description).draw(surface)

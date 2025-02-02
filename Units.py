@@ -1,11 +1,10 @@
 import pygame
 
-from Widgets.unitWidget import unitWidget
-from Widgets.widgetBlock import WidgetBlock
+from Widgets import unitWidget, WidgetBlock
 
 
 class Unit:
-    def __init__(self, name, icon, description=''):
+    def __init__(self, name: str, icon: pygame.image, description: str = ''):
         self.name = name
         self.icon = pygame.sprite.Sprite()
         self.icon.image = icon
@@ -17,6 +16,6 @@ class Unit:
 
 
 class TowerUnit(Unit):
-    def __init__(self, name, icon, tower, description=''):
+    def __init__(self, name: str, icon: pygame.image, tower, description: str =''):
         super().__init__(name, icon, description)
         self.tower = tower

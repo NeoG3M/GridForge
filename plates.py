@@ -6,20 +6,20 @@ PLATE_SIZE = 32
 class PlateConstructor:
     FACING = {'N': 0, 'E': 90, 'S': 180, 'W': 270}
 
-    def __init__(self, img_name: str, rotation: str, x, y, group):
+    def __init__(self, img_name: str, rotation: str, x: int, y: int, group: pygame.sprite.Group):
         self.sprite = pygame.sprite.Sprite(group)
         self.image = pygame.image.load(f'plates/{img_name}.png').convert_alpha()
 
         self.sprite.image = pygame.transform.rotate(self.image, self.FACING[rotation])
         self.sprite.rect = pygame.Rect(x * PLATE_SIZE, y * PLATE_SIZE, PLATE_SIZE, PLATE_SIZE)
 
-    def get_info(self):
-        return None
+    def get_info(self) -> str | None:
+        pass
 
-    def can_use_unit(self, unit):
-        return True
+    def can_use_unit(self, unit) -> bool:
+        pass
 
-    def is_solid(self):
+    def is_solid(self) -> bool:
         return False
 
 
@@ -56,7 +56,7 @@ class SolidPlate(PlateConstructor):
 
 
 class TowerPlate(DynamicPlate):
-    def __init__(self, level, img_name: str, states: int, rotation: str, x, y, group):
+    def __init__(self, level: int, img_name: str, states: int, rotation: str, x: int, y: int, group):
         super().__init__(img_name, states, rotation, x, y, group)
         self.tower = None
         self.tower_hp = None

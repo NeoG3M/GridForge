@@ -1,11 +1,13 @@
-import pygame
-
-from Widgets.widget import Widget
 from math import ceil
+
+import pygame
+from typing import Callable
+from .widget import Widget
 
 
 class Button(Widget):
-    def __init__(self, rect, color, text, text_color=pygame.Color('black'), on_click=None):
+    def __init__(self, rect: tuple, color: pygame.Color, text: str, text_color: pygame.Color = pygame.Color('black'),
+                 on_click: Callable = None):
         """Инициализация кнопки"""
 
         super().__init__(rect, color, on_click)
@@ -14,7 +16,7 @@ class Button(Widget):
         self.text = text
         self.text_color = text_color
 
-    def draw(self, surface):
+    def draw(self, surface: pygame.Surface):
         """Рисование кнопки"""
 
         super().draw(surface)
@@ -32,8 +34,7 @@ class Button(Widget):
         pygame.draw.rect(
             text_surface, self.text_color,
             (frame_border, frame_border,
-            self.rect.width - frame_border * 2,
-            self.rect.height - frame_border * 2), 2
+             self.rect.width - frame_border * 2,
+             self.rect.height - frame_border * 2), 2
         )
         surface.blit(text_surface, (self.rect.x, self.rect.y))
-
