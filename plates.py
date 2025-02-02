@@ -24,8 +24,8 @@ class PlateConstructor:
 
 
 class DynamicPlate(PlateConstructor):
-    def __init__(self, img_name: str, states: int, rotation: str, group):
-        super().__init__(img_name, rotation, group)
+    def __init__(self, img_name: str, states: int, rotation: str, x, y, group):
+        super().__init__(img_name, rotation, x, y, group)
         self.states_imgs = []
         for state in range(states):
             img = self.image.subsurface((PLATE_SIZE * state, 0, PLATE_SIZE * (state + 1), PLATE_SIZE))
@@ -56,8 +56,8 @@ class SolidPlate(PlateConstructor):
 
 
 class TowerPlate(DynamicPlate):
-    def __init__(self, level, img_name: str, states: int, rotation: str, group):
-        super().__init__(img_name, states, rotation, group)
+    def __init__(self, level, img_name: str, states: int, rotation: str, x, y, group):
+        super().__init__(img_name, states, rotation, x, y, group)
         self.tower = None
         self.tower_hp = None
         if level == 0:

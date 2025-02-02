@@ -1,6 +1,6 @@
 import sys
 
-from mainFlow import GridForge
+from GridForge import GridForge
 
 
 def main():

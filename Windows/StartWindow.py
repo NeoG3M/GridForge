@@ -1,8 +1,7 @@
 import pygame
 
 from Widgets.Button import Button
-from Widgets.widget import Widget
-from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE, terminate
+from CONSTANTS import *
 from Windows.Window import Window
 
 
@@ -28,7 +27,8 @@ class StartWindow(Window):
         #         self.__BUTTON_DICT[button.text]()
 
     def create_widgets(self):
-        exit_event = lambda: pygame.event.post(pygame.event.Event(self.gridforge.get_event('SHUTDOWN')))
+        from GridForge import get_event
+        exit_event = lambda: pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
         self.widgets.add_widget(
             Button((DISPLAY_SIZE[0] - 160, 20, 150, 50), pygame.Color("orange"), 'Выйти', on_click=exit_event))
         # block = Widgets.widgetBlock.WidgetBlock((20, 20, 150, 400), pygame.Color("gray"), layout_mode='grid')
