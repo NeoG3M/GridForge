@@ -1,7 +1,7 @@
 import csv
 
 from .widget import Widget
-import pygame
+from CONSTANTS import *
 import plates
 
 
@@ -80,34 +80,10 @@ class Camera:
         return pygame.Rect(x, y, w, h)
 
     def render(self, surface):
-        """
-        Отрисовать видимый участок карты и спрайты в пределах виджета.
-
-        :param surface: поверхность pygame.Surface для отрисовки.
-        """
-        # Отрисовка плиток
-        tile_width = 32  # Ширина плитки (px)
-        tile_height = 32  # Высота плитки (px)
-
-        # for row_idx, row in enumerate(self.map_matrix):
-        #     for col_idx, tile in enumerate(row):
-        #         tile_x = col_idx * tile_width - self.offset_x
-        #         tile_y = row_idx * tile_height - self.offset_y
-        #
-        #         # Применяем масштаб и сдвиг
-        #         tile_rect = pygame.Rect(tile_x, tile_y, tile_width, tile_height)
-        #         transformed_rect = self.apply(tile_rect)
-        #
-        #         # Отрисовываем плитку, если она в пределах виджета
-        #         if self.widget_rect.colliderect(transformed_rect):
-        #             pygame.draw.rect(surface, tile, transformed_rect)
-
-        # Отрисовка спрайтов
         surface.fill('#edc9a5')
         for sprite in self.sprite_group:
             # print('rendering')
             transformed_rect = self.apply(sprite.rect)
-            # if self.widget_rect.colliderect(transformed_rect):
             surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
 
 
@@ -129,10 +105,10 @@ class Field(Widget):
         self.camera.handle_event(event)
         super().handle_event(event)
 
-    def check_cell(self, event, unit):
-        cell = self.get_cell(event.pos)
+    def check_cell(self, mousepos, unit):
+        cell = self.get_cell(mousepos)
         if cell:
-            self.level_map[cell[1]][cell[0]].can_use_unit(unit)
+            return self.level_map[int(cell[1])][int(cell[0])].can_use_unit(unit)
 
     def get_cell(self, mouse_pos):
 

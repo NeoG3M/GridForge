@@ -23,8 +23,6 @@ class GridForge:
                 self.current_window.update(event)
                 if event.type == GAME_EVENTS['SWITCH_WINDOW']:
                     self.switch_window(event.name, event.arg)
-                if event.type == GAME_EVENTS['PICK_UNIT']:
-                    print('PICKED:', event.unit)
             pygame.display.flip()
 
     def switch_window(self, new_window, args):

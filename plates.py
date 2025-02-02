@@ -17,7 +17,7 @@ class PlateConstructor:
         return None
 
     def can_use_unit(self, unit):
-        return False
+        return True
 
     def is_solid(self):
         return False
