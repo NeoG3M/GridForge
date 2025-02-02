@@ -56,21 +56,25 @@ import pygame
 from Widgets.widget import Widget
 from Widgets.widgetGroup import WidgetGroup
 
+
 class WidgetBlock(Widget):
     GRID, VERTICAL, HORIZONTAL = 'grid', 'vertical', 'horizontal'
 
-    def __init__(self, rect, color=pygame.Color('gray'), layout_mode=GRID, on_click=None):
+    def __init__(self, rect, color=pygame.Color('#3e1c03'), layout_mode=GRID, on_click=None):
         super().__init__(rect, color, on_click)
         self.widgets = WidgetGroup()
         self.scroll_offset = 0
-        self.scrollbar_rect = pygame.Rect(rect[0] + rect[2] - 20, rect[1], 20, rect[3])
+        self.scrollbar_rect = pygame.Rect(rect[0] + rect[2] - 3, rect[1], 3, rect[3])
         self.scrollbar_color = pygame.Color('darkgray')
         self.scrollbar_dragging = False
         self.layout_mode = layout_mode
+        self.hor_gap = 20
+        self.ver_gap = 20
 
     def add_widget(self, widget):
         self.widgets.add_widget(widget)
         self.distribute_widgets()
+        print()
 
     def distribute_widgets(self):
         if self.layout_mode == self.GRID:
@@ -84,11 +88,13 @@ class WidgetBlock(Widget):
         num_widgets = len(self.widgets.widgets)
         if num_widgets == 0:
             return
-
-        cols = int(self.rect.width // self.widgets.widgets[0].rect.width)
+        cols = int(self.rect.width // (self.widgets.widgets[0].rect.width + self.hor_gap))
         for i, widget in enumerate(self.widgets.widgets):
             row, col = divmod(i, cols)
-            widget.rect.topleft = (self.rect.x + col * widget.rect.width, self.rect.y + row * widget.rect.height - self.scroll_offset)
+            rect = (self.rect.x + 15 + col * widget.rect.width + col * self.hor_gap,
+                    self.rect.y + 20 + row * widget.rect.height +
+                    row * self.ver_gap - self.scroll_offset)
+            widget.rect.topleft = rect
 
     def distribute_vertical(self):
         y_offset = self.rect.y - self.scroll_offset
@@ -118,15 +124,22 @@ class WidgetBlock(Widget):
                 self.distribute_widgets()
 
     def get_max_scroll(self):
-        if self.layout_mode in [self.GRID, self.VERTICAL]:
-            total_height = sum(widget.rect.height for widget in self.widgets.widgets)
-            return max(0, total_height - self.rect.height)
-        else:
-            total_width = sum(widget.rect.width for widget in self.widgets.widgets)
-            return max(0, total_width - self.rect.width)
+        return 0
+        # if self.layout_mode in [self.GRID, self.VERTICAL]:
+        #     total_height = sum(widget.rect.height for widget in self.widgets.widgets)
+        #     return max(0, total_height - self.rect.height)
+        # else:
+        #     total_width = sum(widget.rect.width for widget in self.widgets.widgets)
+        #     return max(0, total_width - self.rect.width)
 
     def draw(self, surface):
+
         super().draw(surface)
         self.widgets.draw(surface)
+        pygame.draw.rect(
+            surface, pygame.Color('orange'),
+            (self.rect.x + 4, self.rect.y + 4,
+             self.rect.width - 8, self.rect.height - 8), 2)
         if self.get_max_scroll() > 0:
             pygame.draw.rect(surface, self.scrollbar_color, self.scrollbar_rect)
+

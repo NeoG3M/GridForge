@@ -1,11 +1,14 @@
 import pygame
 
 from CONSTANTS import *
+from GridForge import get_event
 from Widgets.widgetGroup import WidgetGroup
+
 
 class Window:
     def __init__(self, gf_game, background='black'):
         self.gridforge = gf_game
+        self.background = background
         self.screen = self.gridforge.screen
         self.events = {}
         self.widgets = WidgetGroup()
@@ -16,6 +19,7 @@ class Window:
         pass
 
     def update(self, event):
+        self.add_background()
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -35,17 +39,19 @@ class Window:
 
     def check_keydown_event(self, event):
         if event.key == pygame.K_ESCAPE and event.mod == pygame.KMOD_ALT:
-            pygame.event.post(self.gridforge.get_event('SHUTDOWN'))
+            pygame.event.post(get_event('SHUTDOWN'))
 
     def check_keyup_event(self, event):
         pass
 
-    def add_background(self, background):
+    def add_background(self, background=None):
         '''
         Добавление заднего фона
         :param background:
         :return:
         '''
+        if not background:
+            background = self.background
         if isinstance(background, str):
             background = pygame.Color(background)
         if isinstance(background, pygame.color.Color):
