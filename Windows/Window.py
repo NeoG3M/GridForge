@@ -3,6 +3,7 @@ import pygame
 from CONSTANTS import *
 from Widgets.widgetGroup import WidgetGroup
 
+
 class Window:
     def __init__(self, gf_game, background='black'):
         self.gridforge = gf_game
@@ -66,3 +67,17 @@ class Window:
         if widget.events:
             for event, action in widget.events.items():
                 self.__add_action(event, action)
+
+    def add_widgets(self, *args):
+        """
+        This method realises adding of different count of widgets.
+        It would be good if made any ways to give class widgetGroup()
+        to this method.
+        :param args:
+        :return:
+        """
+        try:
+            for widget in args:
+                self.widgets.add_widget(widget)
+        except TypeError:
+            pass

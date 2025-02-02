@@ -1,10 +1,11 @@
 from CONSTANTS import *
 from Windows.StartWindow import StartWindow
+from Windows.MenuWindow import MenuWindow
 
 
 class GridForge:
     __GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1}
-    __WINDOWS = {'start': StartWindow}
+    __WINDOWS = {'start': StartWindow, 'menu': MenuWindow}
 
     def __init__(self):
         pygame.init()
@@ -22,7 +23,7 @@ class GridForge:
                     terminate()
                 self.current_window.update(event)
                 if event.type == self.__GAME_EVENTS['SWITCH_WINDOW']:
-                    self.switch_window(event.name, event.arg)
+                    self.switch_window(event.name, *event.arg)
             pygame.display.flip()
 
     def switch_window(self, new_window, *args):
