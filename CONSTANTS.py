@@ -12,4 +12,11 @@ def terminate():
     exit()
 
 
+GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
+               'PICK_UNIT': pygame.USEREVENT + 10}
+
+
+def get_event(event):
+    return GAME_EVENTS.get(event, None)
+
 # __all__ = ['DISPLAY_SIZE', 'FPS', 'ALL_SPRITES', 'terminate']

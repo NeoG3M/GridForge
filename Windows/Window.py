@@ -7,8 +7,9 @@ from Widgets.widgetGroup import WidgetGroup
 class Window:
     def __init__(self, gf_game, background='black'):
         self.gridforge = gf_game
+        self.background = background
         self.screen = self.gridforge.screen
-        self.events = {}
+        self.events = dict()
         self.widgets = WidgetGroup()
         self.create_widgets()
 
@@ -28,25 +29,27 @@ class Window:
         if event.type == pygame.KEYUP:
             self.check_keyup_event(event)
 
-    def check_mousebuttondown_event(self, event):
+    def check_mousebuttondown_event(self, event: pygame.event):
         pass
 
-    def check_mousebuttonup_event(self, event):
+    def check_mousebuttonup_event(self, event: pygame.event):
         pass
 
-    def check_keydown_event(self, event):
+    def check_keydown_event(self, event: pygame.event):
         if event.key == pygame.K_ESCAPE and event.mod == pygame.KMOD_ALT:
-            pygame.event.post(self.gridforge.get_event('SHUTDOWN'))
+            pygame.event.post(get_event('SHUTDOWN'))
 
     def check_keyup_event(self, event):
         pass
 
-    def add_background(self, background):
-        '''
+    def add_background(self, background=None):
+        """
         Добавление заднего фона
-        :param background:
-        :return:
-        '''
+        :param background: задний фон
+        :return: None
+        """
+        if not background:
+            background = self.background
         if isinstance(background, str):
             background = pygame.Color(background)
         if isinstance(background, pygame.color.Color):
@@ -56,7 +59,7 @@ class Window:
         elif isinstance(background, tuple):
             self.screen.fill(background)
 
-    def __add_action(self, event, action):
+    def __add_action(self, event: pygame.event, action: Callable):
         self.events[event] = action
 
     def create_widgets(self):

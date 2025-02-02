@@ -6,20 +6,26 @@ PLATE_SIZE = 32
 class PlateConstructor:
     FACING = {'N': 0, 'E': 90, 'S': 180, 'W': 270}
 
-    def __init__(self, img_name: str, rotation: str, group):
+    def __init__(self, img_name: str, rotation: str, x: int, y: int, group: pygame.sprite.Group):
         self.sprite = pygame.sprite.Sprite(group)
         self.image = pygame.image.load(f'plates/{img_name}.png').convert_alpha()
 
         self.sprite.image = pygame.transform.rotate(self.image, self.FACING[rotation])
-        self.sprite.rect = self.image.get_rect()
+        self.sprite.rect = pygame.Rect(x * PLATE_SIZE, y * PLATE_SIZE, PLATE_SIZE, PLATE_SIZE)
 
-    def get_info(self):
-        return None
+    def get_info(self) -> str | None:
+        pass
+
+    def can_use_unit(self, unit) -> bool:
+        pass
+
+    def is_solid(self) -> bool:
+        return False
 
 
 class DynamicPlate(PlateConstructor):
-    def __init__(self, img_name: str, states: int, rotation: str, group):
-        super().__init__(img_name, rotation, group)
+    def __init__(self, img_name: str, states: int, rotation: str, x, y, group):
+        super().__init__(img_name, rotation, x, y, group)
         self.states_imgs = []
         for state in range(states):
             img = self.image.subsurface((PLATE_SIZE * state, 0, PLATE_SIZE * (state + 1), PLATE_SIZE))
@@ -45,4 +51,28 @@ class DynamicPlate(PlateConstructor):
 
 
 class SolidPlate(PlateConstructor):
-    pass
+    def is_solid(self):
+        return True
+
+
+class TowerPlate(DynamicPlate):
+    def __init__(self, level: int, img_name: str, states: int, rotation: str, x: int, y: int, group):
+        super().__init__(img_name, states, rotation, x, y, group)
+        self.tower = None
+        self.tower_hp = None
+        if level == 0:
+            self.max_consumption = 0
+        elif level == 1:
+            self.max_consumption = 25
+        elif level == 2:
+            self.max_consumption = 40
+        elif level == 3:
+            self.max_consumption = 80
+
+    def place_tower(self, tower):
+        self.tower = tower
+        self.tower_hp = tower.maxhp
+        self.switch_state(1)
+
+    def get_hp(self):
+        return self.tower_hp
