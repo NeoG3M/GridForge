@@ -59,7 +59,7 @@ class Window:
         elif isinstance(background, tuple):
             self.screen.fill(background)
 
-    def __add_action(self, event: pygame.event, action: Callable):
+    def __add_action(self, event: pygame.event, action: callable):
         self.events[event] = action
 
     def create_widgets(self):

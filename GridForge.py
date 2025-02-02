@@ -1,9 +1,11 @@
 from CONSTANTS import *
 from Windows import *
+from Windows.MenuWindow import *
 
 
 class GridForge:
-    __WINDOWS = {'start': StartWindow, 'level': GameWindow}
+    __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow}
+    __GAME_EVENTS = GAME_EVENTS
 
     def __init__(self):
         pygame.init()

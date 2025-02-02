@@ -21,5 +21,5 @@ class StartWindow(Window):
         """This method just closes StartWindow and open MenuWindow"""
         if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
             pygame.event.post(pygame.event.Event(self.gridforge.get_event("SWITCH_WINDOW"),
-                                                 name="menu", arg=(self.gridforge,)))
+                                                 name="menu", arg=self.gridforge))
         self.screen.blit(self.__background_sprite.image, (0, 0))
