@@ -1,4 +1,4 @@
-from typing import Callable
+import pygame
 
 from CONSTANTS import *
 from Widgets.widgetGroup import WidgetGroup
@@ -18,7 +18,6 @@ class Window:
         pass
 
     def update(self, event):
-        self.add_background()
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -60,7 +59,7 @@ class Window:
         elif isinstance(background, tuple):
             self.screen.fill(background)
 
-    def __add_action(self, event: pygame.event, action: Callable):
+    def __add_action(self, event: pygame.event, action: callable):
         self.events[event] = action
 
     def create_widgets(self):
@@ -71,3 +70,17 @@ class Window:
         if widget.events:
             for event, action in widget.events.items():
                 self.__add_action(event, action)
+
+    def add_widgets(self, *args):
+        """
+        This method realises adding of different count of widgets.
+        It would be good if made any ways to give class widgetGroup()
+        to this method.
+        :param args:
+        :return:
+        """
+        try:
+            for widget in args:
+                self.widgets.add_widget(widget)
+        except TypeError:
+            pass
