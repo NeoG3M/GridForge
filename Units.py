@@ -17,6 +17,7 @@ class Unit:
 
 
 class TowerUnit(Unit):
-    def __init__(self, name, icon, tower, description=''):
-        super().__init__(name, icon, description)
+    def __init__(self, name, tower, description=''):
         self.tower = tower
+        super().__init__(name, tower.img, description)
+

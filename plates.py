@@ -1,5 +1,7 @@
 import pygame
 
+from Units import TowerUnit
+
 PLATE_SIZE = 32
 
 
@@ -7,6 +9,7 @@ class PlateConstructor:
     FACING = {'N': 0, 'E': 90, 'S': 180, 'W': 270}
 
     def __init__(self, img_name: str, rotation: str, x, y, group):
+        self.sp_group = group
         self.sprite = pygame.sprite.Sprite(group)
         self.image = pygame.image.load(f'plates/{img_name}.png').convert_alpha()
 
@@ -17,10 +20,13 @@ class PlateConstructor:
         return None
 
     def can_use_unit(self, unit):
-        return True
+        return False
 
     def is_solid(self):
         return False
+
+    def apply_unit(self, unit):
+        pass
 
 
 class DynamicPlate(PlateConstructor):
@@ -69,10 +75,24 @@ class TowerPlate(DynamicPlate):
         elif level == 3:
             self.max_consumption = 80
 
-    def place_tower(self, tower):
-        self.tower = tower
-        self.tower_hp = tower.maxhp
-        self.switch_state(1)
+    # def place_tower(self):
+    #     pass
 
     def get_hp(self):
         return self.tower_hp
+
+    def can_use_unit(self, unit):
+        if isinstance(unit, TowerUnit) and not self.tower and unit.tower.consumption <= self.max_consumption:
+            return True
+        return False
+
+    def apply_unit(self, unit):
+        self.tower = unit.tower
+        self.tower_hp = unit.tower.maxhp
+        # self.switch_state(1)
+
+        self.tower_sprite = pygame.sprite.Sprite(self.sp_group)
+        self.tower_image = self.tower.img
+
+        self.tower_sprite.image = self.tower_image
+        self.tower_sprite.rect = pygame.Rect(self.sprite.rect.x, self.sprite.rect.y, PLATE_SIZE, PLATE_SIZE)
