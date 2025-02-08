@@ -11,6 +11,7 @@ class Window:
         self.screen = self.gridforge.screen
         self.events = dict()
         self.widgets = WidgetGroup()
+        self.sprites = pygame.sprite.Group()
         self.create_widgets()
 
     def stop(self, *args):
@@ -20,6 +21,7 @@ class Window:
     def update(self, event):
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
+        self.sprites.draw(self.screen)
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.check_mousebuttondown_event(event)
         if event.type == pygame.MOUSEBUTTONUP:
