@@ -74,7 +74,6 @@ class WidgetBlock(Widget):
     def add_widget(self, widget):
         self.widgets.add_widget(widget)
         self.distribute_widgets()
-        print()
 
     def distribute_widgets(self):
         if self.layout_mode == self.GRID:
@@ -98,8 +97,11 @@ class WidgetBlock(Widget):
 
     def distribute_vertical(self):
         y_offset = self.rect.y - self.scroll_offset
-        for widget in self.widgets.widgets:
-            widget.rect.topleft = (self.rect.x, y_offset)
+
+        for i in range(len(self.widgets.widgets)):
+            widget = self.widgets.widgets[i]
+            queue_offset = y_offset + 10 + i * 5
+            widget.rect.topleft = (self.rect.x + 10, queue_offset)
             y_offset += widget.rect.height
 
     def distribute_horizontal(self):
