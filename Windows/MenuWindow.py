@@ -1,12 +1,17 @@
 import pygame
 
 from Widgets.Button import Button
-from utils import ALL_SPRITES, DISPLAY_SIZE, terminate
+from utils import all_sprites, DISPLAY_SIZE, terminate
+from Widgets.widgetGroup import WidgetGroup
+from Widgets.widgetBlock import WidgetBlock
+from Widgets.level_preview_widget import LevelPreview
+from Widgets.Icon import Icon
+
 from Windows.Window import Window
 
 
 class MenuWindow(Window):
-    __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
+    __background_sprite = pygame.sprite.Sprite(all_sprites)
     __background_sprite.image = pygame.image.load(f"Windows/Windows_back/StartWindow.jpg")
     __background_sprite.rect = __background_sprite.image.get_rect()
     __BUTTON_DICT: dict = {'Выйти': terminate}
@@ -17,6 +22,9 @@ class MenuWindow(Window):
 
     def __init__(self, parent):
         super().__init__(parent, background=self.__background_sprite)
+
+        self.sprites = pygame.sprite.Group()
+        self.widgets = WidgetGroup()
         self.create_widgets()
         self.add_background(self.__background_sprite)
 
@@ -31,8 +39,40 @@ class MenuWindow(Window):
         from GridForge import get_event
         exit_event = lambda: pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
         self.widgets.add_widget(
-            Button((DISPLAY_SIZE[0] - 160, 20, 150, 50), pygame.Color("orange"), 'Выйти', on_click=exit_event))
-        # block = Widgets.widgetBlock.WidgetBlock((20, 20, 150, 400), pygame.Color("gray"), layout_mode='grid')
+            Button((DISPLAY_SIZE[0] - 160, 20, 150, 50),
+                   pygame.Color("gold"), 'Выйти', on_click=exit_event)
+        )
+
+        self.widgets.add_widget(
+            Button((DISPLAY_SIZE[0] - 380, DISPLAY_SIZE[1] - 250, 350, 50),
+                   pygame.Color("black"), "Достижения", pygame.Color("gold"), on_click=None)
+        )
+
+        self.widgets.add_widget(
+            Button((DISPLAY_SIZE[0] - 380, DISPLAY_SIZE[1] - 190, 350, 50),
+                   pygame.Color("black"), "Магазин", pygame.Color("gold"), on_click=None)
+        )
+
+        self.widgets.add_widget(
+            Button((DISPLAY_SIZE[0] - 380, DISPLAY_SIZE[1] - 130, 350, 50),
+                   pygame.Color("black"), "Поддержать авторов", pygame.Color("gold"), on_click=None)
+        )
+
+        block = WidgetBlock((20, 330, 250, 300), pygame.Color("black"),
+                            pygame.Color("gold"), layout_mode='grid')
+        self.widgets.add_widget(block)
+
+        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
+        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
+        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
+
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
+                      "achievement_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
+                      "shop_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
+                      "support_authors_icon.png", (60, 60), self.sprites)
+
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
         # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
@@ -44,5 +84,3 @@ class MenuWindow(Window):
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
         # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
         # self.widgets.add_widget(block)
-
-

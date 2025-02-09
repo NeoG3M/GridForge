@@ -1,6 +1,7 @@
 import pygame
 
-from Widgets import unitWidget, WidgetBlock
+from Widgets.widgetBlock import WidgetBlock
+from Widgets.unitWidget import UnitWidget
 
 
 class Unit:
@@ -11,11 +12,15 @@ class Unit:
         self.description = description
 
     def create_as_widget(self, block: WidgetBlock, size: tuple):
-        uw = unitWidget((0, 0, *size), self)
+        uw = UnitWidget((0, 0, *size), self)
         block.add_widget(uw)
 
 
 class TowerUnit(Unit):
-    def __init__(self, name: str, icon: pygame.image, tower, description: str = ''):
-        super().__init__(name, icon, description)
+    def __init__(self, name: str, tower, description: str = ''):
         self.tower = tower
+        super().__init__(name, tower.img, description)
+
+
+class RepairUnit(Unit):
+    pass

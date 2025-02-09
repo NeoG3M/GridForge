@@ -12,6 +12,7 @@ class Window:
         self.screen = self.gridforge.screen
         self.events = dict()
         self.widgets = WidgetGroup()
+        self.sprites = pygame.sprite.Group()
         self.create_widgets()
         try:
             self.sound_track = pygame.mixer.Sound(f'audio_files/{self.__class__.__name__}.mp3')
@@ -29,8 +30,11 @@ class Window:
         pass
 
     def update(self, event):
+        self.screen.fill((0, 0, 0))
+        self.show_background()
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
+        self.sprites.draw(self.screen)
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.check_mousebuttondown_event(event)
         if event.type == pygame.MOUSEBUTTONUP:
@@ -63,12 +67,15 @@ class Window:
             background = self.background
         if isinstance(background, str):
             background = pygame.Color(background)
-        if isinstance(background, pygame.color.Color):
-            self.screen.fill(background)
-        elif isinstance(background, pygame.sprite.Sprite):
-            self.screen.blit(background.image, (0, 0))
-        elif isinstance(background, tuple):
-            self.screen.fill(background)
+        self.background = background
+
+    def show_background(self):
+        if isinstance(self.background, pygame.color.Color):
+            self.screen.fill(self.background)
+        elif isinstance(self.background, pygame.sprite.Sprite):
+            self.screen.blit(self.background.image, (0, 0))
+        elif isinstance(self.background, tuple):
+            self.screen.fill(self.background)
 
     def __add_action(self, event: pygame.event, action: callable):
         self.events[event] = action
