@@ -18,6 +18,7 @@ class Window:
 
     def update(self, event):
         self.screen.fill((0, 0, 0))
+        self.show_background()
         self.widgets.handle_event(event)
         self.widgets.draw(self.screen)
         self.sprites.draw(self.screen)
@@ -53,12 +54,15 @@ class Window:
             background = self.background
         if isinstance(background, str):
             background = pygame.Color(background)
-        if isinstance(background, pygame.color.Color):
-            self.screen.fill(background)
-        elif isinstance(background, pygame.sprite.Sprite):
-            self.screen.blit(background.image, (0, 0))
-        elif isinstance(background, tuple):
-            self.screen.fill(background)
+        self.background = background
+
+    def show_background(self):
+        if isinstance(self.background, pygame.color.Color):
+            self.screen.fill(self.background)
+        elif isinstance(self.background, pygame.sprite.Sprite):
+            self.screen.blit(self.background.image, (0, 0))
+        elif isinstance(self.background, tuple):
+            self.screen.fill(self.background)
 
     def __add_action(self, event: pygame.event, action: callable):
         self.events[event] = action

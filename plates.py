@@ -1,6 +1,3 @@
-import pygame
-
-from CONSTANTS import raise_event
 from Units import *
 
 PLATE_SIZE = 32

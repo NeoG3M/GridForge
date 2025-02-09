@@ -1,7 +1,8 @@
 import gc
 import math
 
-from CONSTANTS import *
+from utils import *
+
 
 class Tower:
     def __init__(self, maxhp, damage, attack_speed, attack_range, img_name, price, start_consuption, bullet_class,
@@ -39,7 +40,8 @@ class Tower:
 
     def create_child(self):
 
-        tw = Tower(self.maxhp, self.damage, self.attack_speed, self.attack_range, self.img_name, self.price, self.consumption, self.bullet_class, self.bullet_outpoints)
+        tw = Tower(self.maxhp, self.damage, self.attack_speed, self.attack_range, self.img_name, self.price,
+                   self.consumption, self.bullet_class, self.bullet_outpoints)
 
         tower_group.append(tw)
         return tw
@@ -90,4 +92,3 @@ class Tower:
             self.rotation = self.predict_angle(self.target)
         else:
             self.rotation = 0
-

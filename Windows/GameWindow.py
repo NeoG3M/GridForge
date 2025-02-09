@@ -1,9 +1,9 @@
-from CONSTANTS import *
 from Units import TowerUnit
 from Units import Unit
 from Widgets.Button import Button
 from Widgets.Field import Field
 from Widgets.widgetBlock import WidgetBlock
+from utils import *
 from .Window import Window
 
 
@@ -38,7 +38,7 @@ class GameWindow(Window):
         un.create_as_widget(self.towers_block, (70, 98))
 
         self.widgets.add_widget(self.towers_block)
-        exit_event = lambda: raise_event('SWITCH_WINDOW', name='start', arg=[self.gridforge])
+        exit_event = lambda: raise_event('SWITCH_WINDOW', name='start', arg=self.gridforge)
         self.widgets.add_widget(Button((20, 10, 100, 30), pygame.Color('orange'), 'Меню', on_click=exit_event))
 
     def display_picked_unit(self):

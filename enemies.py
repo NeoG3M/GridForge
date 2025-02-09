@@ -3,7 +3,7 @@ import math
 
 import pygame.transform
 
-from CONSTANTS import *
+from utils import *
 
 
 class Enemy:
@@ -102,14 +102,14 @@ class Enemy:
             enemies_in_range = [tower for tower in tower_group if
                                 math.dist(tower.center, self.center) <= self.attack_range]
             self.target = min(enemies_in_range, key=lambda e: math.dist(e.center, self.center), default=None)
-
-        if self.target.hp <= 0:
-            self.target = None
-            self.check_for_target()
-        en_x, en_y = self.target.center
-        if math.sqrt((en_x - self.center[0]) ** 2 + (
-                en_y - self.center[1]) ** 2) > self.attack_range:
-            self.target = None
+        if self.target:
+            if self.target.hp <= 0:
+                self.target = None
+                self.check_for_target()
+            en_x, en_y = self.target.center
+            if math.sqrt((en_x - self.center[0]) ** 2 + (
+                    en_y - self.center[1]) ** 2) > self.attack_range:
+                self.target = None
 
     def heuristic(self, a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
