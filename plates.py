@@ -75,11 +75,20 @@ class TowerPlate(DynamicPlate):
         elif level == 3:
             self.max_consumption = 80
 
-    # def place_tower(self):
-    #     pass
+    def heal_tower_hp(self, amount):
+        self.tower.heal_hp(amount)
+        self.tower_hp = self.get_hp()
+
+    def decrease_tower_hp(self, amount):
+        self.tower.decrease_hp(amount)
+        self.tower_hp = self.get_hp()
+        if self.tower_hp == 0:
+            del self.tower
+            self.tower = None
+            self.tower_hp = None
 
     def get_hp(self):
-        return self.tower_hp
+        return self.tower.hp
 
     def can_use_unit(self, unit):
         if isinstance(unit, TowerUnit) and not self.tower and unit.tower.consumption <= self.max_consumption:

@@ -76,6 +76,16 @@ class Tower:
         self.sprite.image = self.get_rotated_sprite()
         self.rotated_bul_outpts = [pygame.math.Vector2(p).rotate(self.rotation) for p in self.bullet_outpoints]
 
+    def heal_hp(self, amount):
+        self.hp += amount
+        if self.hp > self.maxhp:
+            self.hp = self.maxhp
+
+    def decrease_hp(self, amount):
+        self.hp -= amount
+        if self.hp <= 0:
+            self.hp = 0
+
     def update(self, tick):
         self.check_for_target()
         if self.target:

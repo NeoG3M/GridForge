@@ -1,5 +1,7 @@
 import csv
 
+import pygame
+
 from .widget import Widget
 from CONSTANTS import *
 import plates
@@ -79,16 +81,35 @@ class Camera:
         h = round(rect.height * self.zoom, 1)
         return pygame.Rect(x, y, w, h)
 
+    def get_hp_color(self, percent):
+        if percent > 0.5:
+            g = 255
+            r = int(255 * (1 - percent) * 2)
+        else:
+            r = 255
+            g = int(255 * percent * 2)
+        return r, g, 0
+
     def render(self, surface):
         surface.fill('#edc9a5')
         for plate in self.field.plates:
             transformed_rect = self.apply(plate.sprite.rect)
             surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
             if isinstance(plate, plates.TowerPlate) and plate.tower:
-                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom), -135)
+                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom), 0)
 
-                # rtd_tower.rect.center = transformed_rect.center
                 surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
+
+                # TODO: ПРОВЕРКА НА ОТОБРАЖЕНИЕ HP - НАСТРОЙКА В ОТДЕЛЬНОМ ФАЙЛЕ
+                hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
+                                      transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
+                pygame.draw.rect(surface, (0, 0, 0), hp_bord)
+                percent_of_hp = plate.tower.hp / plate.tower.maxhp
+                hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
+                                     (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
+
+                pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
+
         # for sprite in self.sprite_group:
         #     transformed_rect = self.apply(sprite.rect)
         #     surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
