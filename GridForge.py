@@ -1,3 +1,6 @@
+import ctypes
+
+from Sound_settings import SoundSettings
 from Windows import *
 from Windows.MenuWindow import *
 from utils import *
@@ -6,6 +9,7 @@ from utils import *
 class GridForge:
     __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow}
     __GAME_EVENTS = GAME_EVENTS
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('mycompany.myproduct.subproduct.version')
 
     def __init__(self):
         pygame.init()
@@ -14,6 +18,7 @@ class GridForge:
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
         pygame.display.set_caption('GridForge')
         self.current_window = None
+        self.sound_settings = SoundSettings(self)
 
     def run_game(self):
         game_running = True
