@@ -12,7 +12,7 @@ from Windows.Window import Window
 
 class MenuWindow(Window):
     __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
-    __background_sprite.image = pygame.image.load(f"data/ex.png")
+    __background_sprite.image = pygame.image.load(f"data/menu_window_screen.png")
     __background_sprite.rect = __background_sprite.image.get_rect()
     __BUTTON_DICT: dict = {'Выйти': terminate}
     """
