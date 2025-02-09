@@ -13,7 +13,7 @@ class StartWindow(Window):
     def __int__(self, parent):
         """This class wait for user action,
         then closes himself and open MenuWindow"""
-        super().__int__(parent, background=self.__background_sprite)
+        super().__init__(parent, background=self.__background_sprite)
         self.add_background(self.__background_sprite)
         self.screen.blit(self.__background_sprite.image, (0, 0))
 
