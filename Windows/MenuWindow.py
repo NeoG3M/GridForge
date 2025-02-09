@@ -12,7 +12,7 @@ from Windows.Window import Window
 
 class MenuWindow(Window):
     __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
-    __background_sprite.image = pygame.image.load(f"Windows/Windows_back/StartWindow.jpg")
+    __background_sprite.image = pygame.image.load(f"data/ex.png")
     __background_sprite.rect = __background_sprite.image.get_rect()
     __BUTTON_DICT: dict = {'Выйти': terminate}
     """
@@ -66,8 +66,12 @@ class MenuWindow(Window):
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
 
-        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255),
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
                       "achievement_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
+                      "shop_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
+                      "support_authors_icon.png", (60, 60), self.sprites)
 
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
         # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))

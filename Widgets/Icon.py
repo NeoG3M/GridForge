@@ -5,10 +5,10 @@ from Widgets.widget import Widget
 
 
 class Icon(pygame.sprite.Sprite, Widget):
-    def __init__(self, position: tuple[int, int], image_name: str, size, *group):
+    def __init__(self, position: tuple[int, int], colorkey, image_name: str, size, *group):
         super().__init__(*group)
 
-        self.image = load_image(image_name)
+        self.image = load_image(image_name, colorkey)
         self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect()
         self.rect.x = position[0]

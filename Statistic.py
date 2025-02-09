@@ -41,6 +41,12 @@ class Statistic:
     def get_count_of_enemies(self):
         return self.connection.cursor().execute("SELECT killed_enemies FROM user_statistic").fetchone()[0]
 
+    def add_money(self, money):
+        self.connection.cursor().execute("UPDATE user_statistic SET money = money + {}", (money,))
+
+    def get_count_of_money(self):
+        return self.connection.cursor().execute("SELECT money FROM user_statistic").fetchone()[0]
+
     def close(self):
         self.connection.close()
 
