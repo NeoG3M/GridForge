@@ -1,8 +1,11 @@
-from utils import *
+import pygame.mixer
+
 from Widgets.widgetGroup import WidgetGroup
+from utils import *
 
 
 class Window:
+
     def __init__(self, gf_game, background='black'):
         self.gridforge = gf_game
         self.background = background
@@ -10,6 +13,16 @@ class Window:
         self.events = dict()
         self.widgets = WidgetGroup()
         self.create_widgets()
+        try:
+            self.sound_track = pygame.mixer.Sound(f'audio_files/{self.__class__.__name__}.mp3')
+        except FileNotFoundError:
+            pass
+        else:
+            self.sound_track.play(-1)
+            self.sound_track.set_volume(BASE_MUSIC_VOLUME)
+
+    def stop_music(self):
+        self.sound_track.stop()
 
     def stop(self, *args):
         # особое завершение у дочерних
@@ -83,3 +96,12 @@ class Window:
                 self.widgets.add_widget(widget)
         except TypeError:
             pass
+
+    def set_volume(self, volume: float = BASE_MUSIC_VOLUME):
+        self.sound_track.set_volume(volume)
+
+    def pause_music(self):
+        self.sound_track.stop()
+
+    def play_music(self):
+        self.sound_track.play(-1)

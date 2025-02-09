@@ -16,6 +16,8 @@ def terminate():
 GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
                'PICK_UNIT': pygame.USEREVENT + 10}
 
+BASE_MUSIC_VOLUME = 0.4
+
 
 def get_event(event):
     return GAME_EVENTS.get(event, None)
