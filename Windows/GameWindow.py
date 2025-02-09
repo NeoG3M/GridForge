@@ -18,5 +18,5 @@ class GameWindow(Window):
 
         self.widgets.add_widget(self.towers_block)
         exit_event = lambda: pygame.event.post(
-            pygame.event.Event(get_event('SWITCH_WINDOW'), name='start', arg=(self,)))
+            pygame.event.Event(get_event('SWITCH_WINDOW'), name='start', arg=self.gridforge))
         self.widgets.add_widget(Button((20, 10, 100, 30), pygame.Color('orange'), 'Меню', on_click=exit_event))
