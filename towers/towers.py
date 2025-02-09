@@ -1,8 +1,6 @@
 import gc
 import math
 
-from pympler import asizeof
-
 from CONSTANTS import *
 
 class Tower:
@@ -42,14 +40,9 @@ class Tower:
     def create_child(self):
 
         tw = Tower(self.maxhp, self.damage, self.attack_speed, self.attack_range, self.img_name, self.price, self.consumption, self.bullet_class, self.bullet_outpoints)
-        # targ = int
-        # targ.hp = 100
-        # targ.center = ()
+
         tower_group.append(tw)
         return tw
-
-    def get_rotated_sprite(self):
-        return pygame.transform.rotate(self.sprite.image, self.rotation)
 
     def set_position(self, pos):
         self.sprite.rect.topleft = pos
@@ -76,18 +69,10 @@ class Tower:
     def predict_angle(self, target):
         ty, tx = self.center
         ey, ex = target.center
-
         return math.degrees(math.atan2(ey - ty, ex - tx)) - 180
 
     def attack(self):
         pass
-
-    def rotate(self, to_predict=False):
-        if to_predict:
-            self.rotation = self.predict_angle(self.target)
-        self.sprite.image = self.get_rotated_sprite()
-
-        self.rotated_bul_outpts = [pygame.math.Vector2(p).rotate(self.rotation) for p in self.bullet_outpoints]
 
     def heal_hp(self, amount):
         self.hp += amount
@@ -102,10 +87,7 @@ class Tower:
     def update(self, tick):
         self.check_for_target()
         if self.target:
-            self.rotate(True)
-            # if tick % self.attack_speed == 0:
-            #     self.attack()
+            self.rotation = self.predict_angle(self.target)
         else:
             self.rotation = 0
-            self.rotate()
 

@@ -96,21 +96,20 @@ class Enemy:
             self.hp = 0
 
     def check_for_target(self):
-        if not self.target:
-            if math.dist(self.game_field.get_reactor().center, self.center) <= self.attack_range:
-                self.target = self.game_field.get_reactor()
-            else:
-                enemies_in_range = [tower for tower in tower_group if
-                                    math.dist(tower.center, self.center) <= self.attack_range]
-                self.target = min(enemies_in_range, key=lambda e: math.dist(e.center, self.center), default=None)
+        if math.dist(self.game_field.get_reactor().center, self.center) <= self.attack_range:
+            self.target = self.game_field.get_reactor()
         else:
-            if self.target.hp <= 0:
-                self.target = None
-                self.check_for_target()
-            en_x, en_y = self.target.center
-            if math.sqrt((en_x - self.center[0]) ** 2 + (
-                    en_y - self.center[1]) ** 2) > self.attack_range:
-                self.target = None
+            enemies_in_range = [tower for tower in tower_group if
+                                math.dist(tower.center, self.center) <= self.attack_range]
+            self.target = min(enemies_in_range, key=lambda e: math.dist(e.center, self.center), default=None)
+
+        if self.target.hp <= 0:
+            self.target = None
+            self.check_for_target()
+        en_x, en_y = self.target.center
+        if math.sqrt((en_x - self.center[0]) ** 2 + (
+                en_y - self.center[1]) ** 2) > self.attack_range:
+            self.target = None
 
     def heuristic(self, a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
