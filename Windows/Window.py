@@ -22,7 +22,7 @@ class Window:
             self.sound_track.play(-1)
             self.sound_track.set_volume(BASE_MUSIC_VOLUME)
 
-    @staticmethod
+    # @staticmethod
     def check_having_soundtrack(func):
         def func_(self):
             try:
