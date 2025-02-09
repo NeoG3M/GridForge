@@ -1,8 +1,5 @@
-from Units import TowerUnit
-from Units import Unit
-from Widgets.Button import Button
-from Widgets.Field import Field
-from Widgets.widgetBlock import WidgetBlock
+from Units import *
+from Widgets import *
 from utils import *
 from .Window import Window
 
@@ -13,33 +10,53 @@ class GameWindow(Window):
         self.is_dragging_unit = False
         self.picked_unit = None
         self.last_mouse_pos = (0, 0)
+        self.current_money = 100
         self.create_widgets()
-        self.add_background('darkgray')
+        self.add_background('black')
         self.sprites = pygame.sprite.Group()
 
     def create_widgets(self):
-        self.field = Field((400, 50, 700, 560), level='level_0')
+        self.field = Field((400, 80, 700, 560), level='level_0')
         self.widgets.add_widget(self.field)
-        self.towers_block = WidgetBlock((20, 50, 290, 560))
+        self.towers_block = WidgetBlock((20, 80, 290, 560))
 
-        un = Unit('80KW', pygame.image.load('plates/E1.png'),
-                  'Это текстовое поле, которое баганно отображается из-за порядка отрисовки в игре (')
-        un.create_as_widget(self.towers_block, (70, 98))
-        un = Unit('40KW', pygame.image.load('plates/E2.png'))
-        un.create_as_widget(self.towers_block, (70, 98))
-        un = Unit('10KW', pygame.image.load('plates/E3.png'),
-                  'Это всеголишь обычная земля в мире постапокалипсиса. Вы можете попробовать её сварить!')
-        un.create_as_widget(self.towers_block, (70, 98))
+        # un = Unit('80KW', pygame.image.load('plates/E1.png'),
+        #           'Это текстовое поле, которое баганно отображается из-за порядка отрисовки в игре (')
+        # un.create_as_widget(self.towers_block, (70, 98))
+
         import towers.towers
+        with open('data/player.json', encoding='utf8') as js:
+            dat = json.loads(js.read())
+        for tower in dat['avialable_towers']:
+            tower_data = dat['towers'][tower]
+            un = TowerUnit(tower_data['name'],
+                           towers.towers.Tower(img_name=tower_data['img'], **tower_data['creation_data']),
+                           tower_data[
+                               'description'] + f'\n ПОТРЕБЛЕНИЕ:{tower_data["creation_data"]["start_consuption"]}\n'
+                                                f'СТОИМОСТЬ:{tower_data["creation_data"]["price"]}')
+            un.create_as_widget(self.towers_block, (70, 98))
 
-        un = TowerUnit('20KW',
-                       towers.towers.Tower(100, 20, 30, 80, 'test_tower', 60, 20, None, [(3, 12)]),
-                       'Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана Мана ')
-        un.create_as_widget(self.towers_block, (70, 98))
+        self.units_block = WidgetBlock((400, 10, 600, 50))
+        un = RepairUnit()
+        un.create_as_widget(self.units_block, (30, 30))
 
+        un = RadiusUpgradeUnit()
+        un.create_as_widget(self.units_block, (30, 30))
+
+        un = DamageUpgradeUnit()
+        un.create_as_widget(self.units_block, (30, 30))
+
+        un = AttackSpeedUpgradeUnit()
+        un.create_as_widget(self.units_block, (30, 30))
+
+        self.widgets.add_widget(self.units_block)
         self.widgets.add_widget(self.towers_block)
+
+        self.widgets.add_widget(NumberWidget(self, (140, 10, 170, 50)))
+
         exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
-        self.widgets.add_widget(Button((20, 10, 100, 30), pygame.Color('orange'), 'Меню', on_click=exit_event))
+        self.widgets.add_widget(
+            Button((20, 10, 100, 50), pygame.Color('black'), 'Меню', pygame.Color('orange'), on_click=exit_event))
 
     def display_picked_unit(self):
         if self.is_dragging_unit:
@@ -76,6 +93,7 @@ class GameWindow(Window):
             self.picked_unit = event.unit
         if event.type == pygame.MOUSEMOTION:
             self.last_mouse_pos = event.pos
+
         super().update(event)
         if event.type == get_event('TICK_UPDATE'):
             if self.gridforge.ticks % 10 == 0:
@@ -83,6 +101,8 @@ class GameWindow(Window):
                     enemy.update()
                 for tower in tower_group:
                     tower.update(self.gridforge.ticks)
+            if self.gridforge.ticks % 3 == 0:
+                self.field.reactor.increase_state()
         self.display_picked_unit()
 
     def check_mousebuttondown_event(self, event):

@@ -16,7 +16,7 @@ def terminate():
     exit()
 
 
-GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
+GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1, 'DISPLAY_TEXT_WINDOW': pygame.USEREVENT + 4,
                'PICK_UNIT': pygame.USEREVENT + 10, 'REACTOR_EXPLOSION': pygame.USEREVENT + 11,
                'TICK_UPDATE': pygame.USEREVENT + 100}
 
