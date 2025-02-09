@@ -33,7 +33,7 @@ class DynamicPlate(PlateConstructor):
         super().__init__(img_name, rotation, x, y, group)
         self.states_imgs = []
         for state in range(states):
-            img = self.image.subsurface((PLATE_SIZE * state, 0, PLATE_SIZE * (state + 1), PLATE_SIZE))
+            img = self.image.subsurface((PLATE_SIZE * state, 0, PLATE_SIZE, PLATE_SIZE))
             img = pygame.transform.rotate(img, self.FACING[rotation])
             self.states_imgs.append(img)
         self.cur_state = 0

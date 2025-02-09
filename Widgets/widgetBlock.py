@@ -6,7 +6,7 @@ from Widgets import Widget, WidgetGroup
 class WidgetBlock(Widget):
     GRID, VERTICAL, HORIZONTAL = 'grid', 'vertical', 'horizontal'
 
-    def __init__(self, rect, background_color=pygame.Color('#3e1c03'),
+    def __init__(self, rect, background_color=pygame.Color('black'),
                  border_color=pygame.Color('gold'), layout_mode=GRID, on_click=None):
         super().__init__(rect, background_color, on_click)
         self.border_color = border_color
@@ -38,8 +38,8 @@ class WidgetBlock(Widget):
         cols = int(self.rect.width // (self.widgets.widgets[0].rect.width + self.hor_gap))
         for i, widget in enumerate(self.widgets.widgets):
             row, col = divmod(i, cols)
-            rect = (self.rect.x + 15 + col * widget.rect.width + col * self.hor_gap,
-                    self.rect.y + 20 + row * widget.rect.height +
+            rect = (self.rect.x + 10 + col * widget.rect.width + col * self.hor_gap,
+                    self.rect.y + 10 + row * widget.rect.height +
                     row * self.ver_gap - self.scroll_offset)
             widget.rect.topleft = rect
 

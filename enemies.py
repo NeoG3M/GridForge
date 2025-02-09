@@ -170,7 +170,6 @@ class Enemy:
                 self.abs_position = (self.cur_position[0] // 32, self.cur_position[1] // 32)
                 self.next_plate = self.path.pop(0)
                 self.next_plate = (self.next_plate[1], self.next_plate[0])
-            print(self.next_plate, self.game_field.get_reactor_coords())
 
             self.velocity[0] = self.speed * (self.next_plate[0] - self.abs_position[0])
             self.velocity[1] = self.speed * (self.next_plate[1] - self.abs_position[1])

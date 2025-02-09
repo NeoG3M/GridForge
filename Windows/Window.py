@@ -10,6 +10,7 @@ class Window:
         self.events = dict()
         self.widgets = WidgetGroup()
         self.sprites = pygame.sprite.Group()
+        self.priority_widgets = []
         self.create_widgets()
 
     def stop(self, *args):
@@ -30,6 +31,9 @@ class Window:
             self.check_keydown_event(event)
         if event.type == pygame.KEYUP:
             self.check_keyup_event(event)
+        for widget in self.priority_widgets:
+            widget.draw(self.screen)
+        self.priority_widgets.clear()
 
     def check_mousebuttondown_event(self, event: pygame.event):
         pass

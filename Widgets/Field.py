@@ -92,24 +92,34 @@ class Camera:
 
     def render(self, surface):
         surface.fill('#edc9a5')
-        for plate in self.field.plates:
-            transformed_rect = self.apply(plate.sprite.rect)
-            surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
-            if isinstance(plate, plates.TowerPlate) and plate.tower:
-                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom),
-                                                    plate.tower.rotation)
+        # print(self.field.rect.h)
+        # print(self.offset_y // 32, ((self.offset_y + 32 * (self.field.rect.h / self.zoom // 32)) // 32 + 1))
+        # print(self.offset_y // 32, ((self.offset_y + self.field.rect.h * self.zoom) // 32 + 1))
+        # print()
+        # for plate in self.field.plates:
+        y_edge = min(int((self.offset_y + 32 * (self.field.rect.h / self.zoom // 32)) // 32 + 2),
+        len(self.map_matrix))
+        x_edge = min(int((self.offset_x + self.field.rect.w * self.zoom) // 32 + 2), len(self.map_matrix[0]))
+        for y in range(int(self.offset_y // 32), y_edge):
+            for x in range(int(self.offset_x // 32), x_edge):
+                plate = self.map_matrix[y][x]
+                transformed_rect = self.apply(plate.sprite.rect)
+                surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
+                if isinstance(plate, plates.TowerPlate) and plate.tower:
+                    rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom),
+                                                        plate.tower.rotation)
 
-                surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
+                    surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
 
-                # TODO: ПРОВЕРКА НА ОТОБРАЖЕНИЕ HP - НАСТРОЙКА В ОТДЕЛЬНОМ ФАЙЛЕ
-                hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
-                                      transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
-                pygame.draw.rect(surface, (0, 0, 0), hp_bord)
-                percent_of_hp = plate.tower.hp / plate.tower.maxhp
-                hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
-                                     (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
+                    # TODO: ПРОВЕРКА НА ОТОБРАЖЕНИЕ HP - НАСТРОЙКА В ОТДЕЛЬНОМ ФАЙЛЕ
+                    hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
+                                          transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
+                    pygame.draw.rect(surface, (0, 0, 0), hp_bord)
+                    percent_of_hp = plate.tower.hp / plate.tower.maxhp
+                    hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
+                                         (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
 
-                pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
+                    pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
         for enemy in enemy_group:
             enemy_img = enemy.get_scaled_image(self.zoom)
             transformed_rect = self.apply(pygame.Rect(*enemy.cur_position, 32, 32))
@@ -120,10 +130,11 @@ class Camera:
 
 
 class Field(Widget):
-    __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
+    __plates = {'W0': {'img_name': 'W0', 'rotation': 'N'}, 'W1': {'img_name': 'W1', 'rotation': 'N'},
+                'W2': {'img_name': 'W2', 'rotation': 'N'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
                 'E': {'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0, 'states': 1},
                 'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 1, 'states': 1},
-                'R': {'img_name': 'reactor', 'states': 1, 'rotation': 'N'},
+                'R': {'img_name': 'reactor', 'states': 6, 'rotation': 'N'},
                 'T': {'rotation': 'N'}}
 
     def __init__(self, rect, level: str):
@@ -188,7 +199,7 @@ class Field(Widget):
                     plate = self.create_plate(plate, j, i)
                     if isinstance(plate, plates.ReactorPlate):
                         self.reactor_coords = (j, i)
-                        self.reactor = plate.reactor
+                        self.reactor = plate
                     self.level_map[i].append(plate)
                     self.plates.append(plate)
                     if isinstance(plate, plates.TrailPlate) or isinstance(plate, plates.ReactorPlate):
@@ -228,7 +239,7 @@ class Field(Widget):
         return self.danger_path_map.copy()
 
     def get_reactor(self):
-        return self.reactor
+        return self.reactor.reactor
 
     def get_reactor_coords(self):
         return self.reactor_coords
@@ -236,7 +247,7 @@ class Field(Widget):
     def create_plate(self, code: str, x, y):
         rotation = code[-1]
         if code.startswith('W'):
-            return plates.SolidPlate(**self.__plates[code[:-1]], x=x, y=y, group=self.sprites)
+            return plates.SolidPlate(**self.__plates[code], x=x, y=y, group=self.sprites)
         elif code.startswith('E'):
             return plates.PlateConstructor(x=x, y=y, img_name=code, **self.__plates['E'], group=self.sprites)
         elif code.startswith('TB'):

@@ -1,5 +1,4 @@
-import pygame
-
+from utils import *
 from Widgets.textwindow_widget import TextWindowWidget
 from Widgets.widget import Widget
 
@@ -13,8 +12,6 @@ class UnitWidget(Widget):
 
     def handle_event(self, event):
         super().handle_event(event)
-        if self.hovered:
-            pass
 
     def draw(self, surface):
         if self.hovered:
@@ -36,5 +33,8 @@ class UnitWidget(Widget):
         text = font.render(self.unit.name, True, pygame.Color('black'))
         surface.blit(pygame.transform.scale(text, (self_rect.w - 10, self_rect.h - self_rect.w)),
                      (self_rect.bottomleft[0] + 5, self_rect.bottomleft[1] - (self_rect.h - self_rect.w)))
+
         if self.hovered and self.unit.description:
-            TextWindowWidget((*pygame.mouse.get_pos(), 150, 100), self.unit.description).draw(surface)
+            from GridForge import current_window
+            text_widget = TextWindowWidget((*pygame.mouse.get_pos(), 150, 100), self.unit.description)
+            current_window.priority_widgets.append(text_widget)
