@@ -38,7 +38,7 @@ class GameWindow(Window):
         un.create_as_widget(self.towers_block, (70, 98))
 
         self.widgets.add_widget(self.towers_block)
-        exit_event = lambda: raise_event('SWITCH_WINDOW', name='start', arg=self.gridforge)
+        exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
         self.widgets.add_widget(Button((20, 10, 100, 30), pygame.Color('orange'), 'Меню', on_click=exit_event))
 
     def display_picked_unit(self):

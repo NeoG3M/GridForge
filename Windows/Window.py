@@ -22,6 +22,17 @@ class Window:
             self.sound_track.play(-1)
             self.sound_track.set_volume(BASE_MUSIC_VOLUME)
 
+    @staticmethod
+    def check_having_soundtrack(func):
+        def func_(self):
+            try:
+                return func(self)
+            except AttributeError:
+                pass
+
+        return func_
+
+    @check_having_soundtrack
     def stop_music(self):
         self.sound_track.stop()
 
@@ -104,11 +115,14 @@ class Window:
         except TypeError:
             pass
 
+    @check_having_soundtrack
     def set_volume(self, volume: float = BASE_MUSIC_VOLUME):
         self.sound_track.set_volume(volume)
 
+    @check_having_soundtrack
     def pause_music(self):
         self.sound_track.stop()
 
+    @check_having_soundtrack
     def play_music(self):
         self.sound_track.play(-1)

@@ -33,6 +33,7 @@ class GridForge:
     def switch_window(self, new_window, *args):
         if self.current_window:
             self.current_window.stop()
+            self.current_window.stop_music()
         self.current_window = self.__WINDOWS[new_window](*args)
 
     def get_event(self, event):
