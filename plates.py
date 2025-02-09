@@ -7,7 +7,7 @@ PLATE_SIZE = 32
 
 
 class PlateConstructor:
-    FACING = {'N': 0, 'E': 90, 'S': 180, 'W': 270}
+    FACING = {'N': 0, 'W': 90, 'S': 180, 'E': 270}
 
     def __init__(self, img_name: str, rotation: str, x: int, y: int, group: pygame.sprite.Group):
         self.sp_group = group
@@ -99,8 +99,9 @@ class TowerPlate(DynamicPlate):
 
     def apply_unit(self, unit):
         if isinstance(unit, TowerUnit):
-            self.tower = unit.tower
-            self.tower_hp = unit.tower.maxhp
+            self.tower = unit.tower.create_child()
+            self.tower.set_position((self.x * 32, self.y * 32))
+            self.tower_hp = self.tower.maxhp
             # self.switch_state(1)
 
             self.tower_sprite = pygame.sprite.Sprite(self.sp_group)
@@ -117,9 +118,11 @@ class TrailPlate(PlateConstructor):
 
 class ReactorPlate(DynamicPlate):
     class Reactor:
-        def __init__(self, maxhp):
+        def __init__(self, maxhp, center):
             self.maxhp = maxhp
             self.hp = maxhp
+
+            self.center = center
 
         def heal_hp(self, amount):
             self.hp += amount
@@ -134,7 +137,7 @@ class ReactorPlate(DynamicPlate):
     def __init__(self, reactor_hp, img_name: str, states: int, rotation: str, x: int, y: int,
                  group: pygame.sprite.Group):
         super().__init__(img_name, states, rotation, x, y, group)
-        self.reactor = self.Reactor(reactor_hp)
+        self.reactor = self.Reactor(reactor_hp, (32 * x + 16, 32 * y + 16))
 
     def can_use_unit(self, unit):
         if isinstance(unit, RepairUnit):

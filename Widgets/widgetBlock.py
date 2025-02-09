@@ -74,7 +74,6 @@ class WidgetBlock(Widget):
     def add_widget(self, widget):
         self.widgets.add_widget(widget)
         self.distribute_widgets()
-        print()
 
     def distribute_widgets(self):
         if self.layout_mode == self.GRID:

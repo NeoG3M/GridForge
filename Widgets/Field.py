@@ -95,7 +95,8 @@ class Camera:
             transformed_rect = self.apply(plate.sprite.rect)
             surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
             if isinstance(plate, plates.TowerPlate) and plate.tower:
-                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom), 0)
+                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom),
+                                                    plate.tower.rotation)
 
                 surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
 
@@ -108,7 +109,10 @@ class Camera:
                                      (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
 
                 pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
-
+        for enemy in enemy_group:
+            enemy_img = enemy.get_scaled_image(self.zoom)
+            transformed_rect = self.apply(pygame.Rect(*enemy.cur_position, 32, 32))
+            surface.blit(enemy_img, transformed_rect)
         # for sprite in self.sprite_group:
         #     transformed_rect = self.apply(sprite.rect)
         #     surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
@@ -118,11 +122,12 @@ class Field(Widget):
     __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
                 'E': {'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0, 'states': 1},
                 'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 1, 'states': 1},
-                'R': {'img_name': 'reactor', 'states': 5, 'rotation': 'N'}}
+                'R': {'img_name': 'reactor', 'states': 1, 'rotation': 'N'},
+                'T': {'rotation': 'N'}}
 
     def __init__(self, rect, level: str):
         super().__init__(rect)
-        self.level_directory = level
+        self.level_directory = 'level/' + level + '/'
 
         self.x, self.y, self.width, self.height = rect
         self.surface = pygame.Surface((self.rect.width, self.rect.height))
@@ -133,6 +138,8 @@ class Field(Widget):
         self.path_map = []
         self.basic_danger = []
         self.danger_path_map = []
+
+        self.reactor = None
         self.reactor_coords = (0, 0)
         self.unpack_map(self.level_directory + 'map.csv')
 
@@ -180,6 +187,7 @@ class Field(Widget):
                     plate = self.create_plate(plate, j, i)
                     if isinstance(plate, plates.ReactorPlate):
                         self.reactor_coords = (j, i)
+                        self.reactor = plate.reactor
                     self.level_map[i].append(plate)
                     self.plates.append(plate)
                     if isinstance(plate, plates.TrailPlate) or isinstance(plate, plates.ReactorPlate):
@@ -211,8 +219,18 @@ class Field(Widget):
                     if dx * dx + dy * dy <= radius * radius:
                         self.danger_path_map[nx][ny] += danger_value
 
+    def get_path_map(self):
+        return self.path_map
+
     def get_danger_map(self):
+        self.update_danger_map()
         return self.danger_path_map.copy()
+
+    def get_reactor(self):
+        return self.reactor
+
+    def get_reactor_coords(self):
+        return self.reactor_coords
 
     def create_plate(self, code: str, x, y):
         rotation = code[-1]
@@ -222,7 +240,9 @@ class Field(Widget):
             return plates.PlateConstructor(x=x, y=y, img_name=code, **self.__plates['E'], group=self.sprites)
         elif code.startswith('TB'):
             return plates.TowerPlate(**self.__plates[code], x=x, y=y, group=self.sprites)
+        elif code.startswith('T'):
+            return plates.TrailPlate(x=x, y=y, img_name=code, **self.__plates['T'], group=self.sprites)
         elif code.startswith('R'):
             with open(self.level_directory + 'lvl.json', 'r', encoding='UTF8') as lvl_file:
                 lvl = json.load(lvl_file)
-                return plates.ReactorPlate(lvl['reactor']['hp'], **self.__plates[code], x=x, y=y, group=self.sprites)
+                return plates.ReactorPlate(lvl['reactor']['hp'], **self.__plates['R'], x=x, y=y, group=self.sprites)

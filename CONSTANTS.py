@@ -4,7 +4,10 @@ import pygame
 
 DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 1200, 700
 FPS = 100
-ALL_SPRITES = pygame.sprite.Group()
+
+tower_group = []
+enemy_group = []
+all_sprites = pygame.sprite.Group()
 
 
 def terminate():
@@ -13,7 +16,8 @@ def terminate():
 
 
 GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
-               'PICK_UNIT': pygame.USEREVENT + 10, 'REACTOR_EXPLOSION': pygame.USEREVENT + 11}
+               'PICK_UNIT': pygame.USEREVENT + 10, 'REACTOR_EXPLOSION': pygame.USEREVENT + 11,
+               'TICK_UPDATE': pygame.USEREVENT + 100}
 
 
 def get_event(event):
