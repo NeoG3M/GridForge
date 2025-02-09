@@ -1,7 +1,7 @@
 import pygame
 
 from Windows.Window import Window
-from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE
+from utils import ALL_SPRITES, DISPLAY_SIZE
 
 
 class StartWindow(Window):
@@ -14,11 +14,11 @@ class StartWindow(Window):
     def __int__(self, parent):
         """This class wait for user action,
         then closes himself and open MenuWindow"""
-        super().__int__(parent, background=self.__background_sprite)
+        super().__init__(parent, background=self.__background_sprite)
         self.add_background(self.__background_sprite)
         self.screen.blit(self.__background_sprite.image, (0, 0))
 
-    def update(self, event):
+    def update(self, event: pygame.event):
         """This method just closes StartWindow and open MenuWindow"""
         if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN:
             pygame.event.post(pygame.event.Event(self.gridforge.get_event("SWITCH_WINDOW"),

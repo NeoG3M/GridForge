@@ -9,6 +9,7 @@ ALL_SPRITES = pygame.sprite.Group()
 
 def terminate():
     pygame.quit()
+    pygame.mixer.quit()
     exit()
 
 

@@ -16,6 +16,6 @@ class Unit:
 
 
 class TowerUnit(Unit):
-    def __init__(self, name: str, icon: pygame.image, tower, description: str =''):
+    def __init__(self, name: str, icon: pygame.image, tower, description: str = ''):
         super().__init__(name, icon, description)
         self.tower = tower
