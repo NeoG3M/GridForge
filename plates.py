@@ -15,6 +15,7 @@ class PlateConstructor:
         self.image = pygame.image.load(f'plates/{img_name}.png').convert_alpha()
 
         self.sprite.image = pygame.transform.rotate(self.image, self.FACING[rotation])
+        self.x, self.y = x, y
         self.sprite.rect = pygame.Rect(x * PLATE_SIZE, y * PLATE_SIZE, PLATE_SIZE, PLATE_SIZE)
 
     def get_info(self) -> str:
@@ -97,15 +98,16 @@ class TowerPlate(DynamicPlate):
         return False
 
     def apply_unit(self, unit):
-        self.tower = unit.tower
-        self.tower_hp = unit.tower.maxhp
-        # self.switch_state(1)
+        if isinstance(unit, TowerUnit):
+            self.tower = unit.tower
+            self.tower_hp = unit.tower.maxhp
+            # self.switch_state(1)
 
-        self.tower_sprite = pygame.sprite.Sprite(self.sp_group)
-        self.tower_image = self.tower.img
+            self.tower_sprite = pygame.sprite.Sprite(self.sp_group)
+            self.tower_image = self.tower.img
 
-        self.tower_sprite.image = self.tower_image
-        self.tower_sprite.rect = pygame.Rect(self.sprite.rect.x, self.sprite.rect.y, PLATE_SIZE, PLATE_SIZE)
+            self.tower_sprite.image = self.tower_image
+            self.tower_sprite.rect = pygame.Rect(self.sprite.rect.x, self.sprite.rect.y, PLATE_SIZE, PLATE_SIZE)
 
 
 class TrailPlate(PlateConstructor):

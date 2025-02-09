@@ -131,6 +131,7 @@ class Field(Widget):
         self.plates = []
         self.level_map = []
         self.path_map = []
+        self.basic_danger = []
         self.danger_path_map = []
         self.reactor_coords = (0, 0)
         self.unpack_map(self.level_directory + 'map.csv')
@@ -150,6 +151,8 @@ class Field(Widget):
     def apply_unit(self, mousepos, unit):
         cell = self.get_cell(mousepos)
         self.level_map[int(cell[1])][int(cell[0])].apply_unit(unit)
+        if isinstance(unit, plates.TowerUnit):
+            self.update_danger_map()
 
     def get_cell(self, mouse_pos):
 
@@ -171,7 +174,7 @@ class Field(Widget):
             reader = csv.reader(level_file, delimiter=';')
             for i, row in enumerate(reader, 0):
                 self.level_map.append([])
-                self.danger_path_map.append([])
+                self.basic_danger.append([])
                 self.path_map.append([])
                 for j, plate in enumerate(row, 0):
                     plate = self.create_plate(plate, j, i)
@@ -181,8 +184,35 @@ class Field(Widget):
                     self.plates.append(plate)
                     if isinstance(plate, plates.TrailPlate) or isinstance(plate, plates.ReactorPlate):
                         self.path_map[i].append(0)
+                        self.basic_danger[i].append(0)
                     else:
                         self.path_map[i].append(1)
+                        self.basic_danger[i].append(float('inf'))
+
+    def update_danger_map(self):
+        self.danger_path_map = self.basic_danger.copy()
+        for tower_plate in filter(lambda pl: isinstance(pl, plates.TowerPlate) and pl.tower, self.plates):
+            tower = tower_plate.tower
+            plate_atck_radius = tower.attack_range // 32 + (1 if tower.attack_range % 32 else 0)
+            #  Типо урон в тик
+            tower_danger = tower.damage * (FPS / tower.attack_speed)
+            self.update_in_radius(tower_plate.x, tower_plate.y, plate_atck_radius, tower_danger)
+
+    def update_in_radius(self, x, y, radius, danger_value):
+        rows, cols = len(self.danger_path_map), len(self.danger_path_map[0])
+
+        for dx in range(-radius, radius + 1):
+            for dy in range(-radius, radius + 1):
+                nx, ny = x + dx, y + dy
+
+                # Проверяем границы карты
+                if 0 <= nx < rows and 0 <= ny < cols:
+                    # Проверяем, находится ли клетка в круге радиуса R
+                    if dx * dx + dy * dy <= radius * radius:
+                        self.danger_path_map[nx][ny] += danger_value
+
+    def get_danger_map(self):
+        return self.danger_path_map.copy()
 
     def create_plate(self, code: str, x, y):
         rotation = code[-1]

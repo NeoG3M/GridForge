@@ -4,10 +4,10 @@ from Widgets.textwindow_widget import TextWindowWidget
 from Widgets.widget import Widget
 
 
-class unitWidget(Widget):
+class UnitWidget(Widget):
     def __init__(self, rect, unit, color=pygame.Color('orange')):
-        from GridForge import get_event
-        on_click = lambda: pygame.event.post(pygame.event.Event(get_event('PICK_UNIT'), unit=unit))
+        from GridForge import raise_event
+        on_click = lambda: raise_event('PICK_UNIT', unit=unit)
         super().__init__(rect, color, on_click)
         self.unit = unit
 

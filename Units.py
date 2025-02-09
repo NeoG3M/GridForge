@@ -1,6 +1,7 @@
 import pygame
 
-from Widgets import unitWidget, WidgetBlock
+from Widgets.widgetBlock import WidgetBlock
+from Widgets.unitWidget import UnitWidget
 
 
 class Unit:
@@ -11,7 +12,7 @@ class Unit:
         self.description = description
 
     def create_as_widget(self, block: WidgetBlock, size: tuple):
-        uw = unitWidget((0, 0, *size), self)
+        uw = UnitWidget((0, 0, *size), self)
         block.add_widget(uw)
 
 
