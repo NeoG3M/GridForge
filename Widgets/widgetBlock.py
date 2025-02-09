@@ -53,8 +53,8 @@
 #             pygame.draw.rect(surface, self.scrollbar_color, self.scrollbar_rect)
 
 import pygame
-from Widgets.widget import Widget
-from Widgets.widgetGroup import WidgetGroup
+
+from Widgets import Widget, WidgetGroup
 
 
 class WidgetBlock(Widget):
@@ -146,4 +146,3 @@ class WidgetBlock(Widget):
              self.rect.width - 8, self.rect.height - 8), 2)
         if self.get_max_scroll() > 0:
             pygame.draw.rect(surface, self.scrollbar_color, self.scrollbar_rect)
-

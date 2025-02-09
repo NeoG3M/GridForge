@@ -1,6 +1,6 @@
 from typing import Callable
 
-from CONSTANTS import *
+from utils import *
 
 
 class Widget:

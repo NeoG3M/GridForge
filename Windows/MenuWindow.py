@@ -6,7 +6,7 @@ from Widgets.widgetBlock import WidgetBlock
 from Widgets.level_preview_widget import LevelPreview
 from Widgets.Icon import Icon
 
-from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE, terminate
+from utils import ALL_SPRITES, DISPLAY_SIZE, terminate
 from Windows.Window import Window
 
 
@@ -84,3 +84,5 @@ class MenuWindow(Window):
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
         # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
         # self.widgets.add_widget(block)
+
+

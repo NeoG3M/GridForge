@@ -1,6 +1,4 @@
-import pygame
-
-from CONSTANTS import *
+from utils import *
 from Widgets.widgetGroup import WidgetGroup
 
 
@@ -72,6 +70,7 @@ class Window:
         if widget.events:
             for event, action in widget.events.items():
                 self.__add_action(event, action)
+        self.widgets.add_widget(widget)
 
     def add_widgets(self, *args):
         """

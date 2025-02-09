@@ -1,6 +1,6 @@
 import pygame.sprite
 
-from CONSTANTS import get_event
+from utils import get_event
 from Widgets import (Button, Field, WidgetBlock)
 from .Window import Window
 

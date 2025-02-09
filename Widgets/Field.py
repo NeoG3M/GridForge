@@ -1,19 +1,13 @@
 import csv
 
-from .widget import Widget
-from CONSTANTS import *
 import plates
+from utils import *
+from .widget import Widget
 
 
 class Camera:
     def __init__(self, field):
-        """
-        Инициализация камеры.
 
-        :param widget_rect: pygame.Rect, определяющий границы виджета на экране.
-        :param map_matrix: двумерный массив (матрица), представляющий плитки карты.
-        :param sprite_group: группа спрайтов, которые нужно отрисовать.
-        """
         self.field = field
         self.widget_rect = field.rect
         self.map_matrix = field.level_map
@@ -26,6 +20,12 @@ class Camera:
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
         self.last_global_mouse_pos = (0, 0)
+        """
+        Инициализация камеры. 
+        :param widget_rect: pygame.Rect, определяющий границы виджета на экране.
+        :param map_matrix: двумерный массив (матрица), представляющий плитки карты.
+        :param sprite_group: группа спрайтов, которые нужно отрисовать.
+        """
 
     def handle_event(self, event):
         """
@@ -105,12 +105,12 @@ class Field(Widget):
         self.camera.handle_event(event)
         super().handle_event(event)
 
-    def check_cell(self, mousepos, unit):
-        cell = self.get_cell(mousepos)
+    def check_cell(self, mouse_pos: tuple, unit):
+        cell = self.get_cell(mouse_pos)
         if cell:
             return self.level_map[int(cell[1])][int(cell[0])].can_use_unit(unit)
 
-    def get_cell(self, mouse_pos):
+    def get_cell(self, mouse_pos: tuple):
 
         x_mouse, y_mouse = mouse_pos
         if self.rect.collidepoint(mouse_pos):
@@ -121,11 +121,11 @@ class Field(Widget):
         return None
 
     def draw(self, surface):
-        super().draw(surface)
+        # super().draw(surface)
         self.camera.render(self.surface)
         surface.blit(self.surface, self.rect)
 
-    def unpack_map(self, filename):
+    def unpack_map(self, filename: str):
         level = []
         with open(filename, 'r', encoding='utf-8') as level_file:
             reader = csv.reader(level_file, delimiter=';')
@@ -138,7 +138,7 @@ class Field(Widget):
     def create_plate(self, code: str, x, y):
         rotation = code[-1]
         if code.startswith('W'):
-            return plates.SolidPlate(**self.__plates[code[:-1]], x=x, y=y, group=self.sprites)
+            return plates.SolidPlate(**self.__plates[code[:-1]], x=x, y=y, group=self.sprites, rotation=rotation)
         elif code.startswith('E'):
             return plates.PlateConstructor(x=x, y=y, img_name=code, **self.__plates['E'], group=self.sprites)
         elif code.startswith('TB'):
