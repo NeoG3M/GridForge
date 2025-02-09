@@ -16,21 +16,24 @@ class GridForge:
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
         self.current_window = None
+        self.ticks = 0
 
         pygame.display.set_caption('GridForge')
 
     def run_game(self):
         game_running = True
-        self.switch_window('start', self)
+        self.switch_window('level', self)
+        pygame.time.set_timer(get_event('TICK_UPDATE'), 40)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
+                if event.type == get_event('TICK_UPDATE'):
+                    self.ticks += 1
                 if event.type == pygame.QUIT or event.type == GAME_EVENTS['SHUTDOWN']:
                     self.connection.close()
                     terminate()
                 self.current_window.update(event)
                 if event.type == GAME_EVENTS['SWITCH_WINDOW']:
                     self.switch_window(event.name, event.arg)
-            self.clock.tick(FPS)
             pygame.display.flip()
             self.clock.tick(FPS)
 

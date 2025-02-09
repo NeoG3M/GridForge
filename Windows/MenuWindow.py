@@ -1,7 +1,7 @@
 import pygame
 
 from Widgets.Button import Button
-from utils import ALL_SPRITES, DISPLAY_SIZE, terminate
+from utils import all_sprites, DISPLAY_SIZE, terminate
 from Widgets.widgetGroup import WidgetGroup
 from Widgets.widgetBlock import WidgetBlock
 from Widgets.level_preview_widget import LevelPreview
@@ -11,7 +11,7 @@ from Windows.Window import Window
 
 
 class MenuWindow(Window):
-    __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
+    __background_sprite = pygame.sprite.Sprite(all_sprites)
     __background_sprite.image = pygame.image.load(f"Windows/Windows_back/StartWindow.jpg")
     __background_sprite.rect = __background_sprite.image.get_rect()
     __BUTTON_DICT: dict = {'Выйти': terminate}
