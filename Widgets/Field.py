@@ -1,5 +1,7 @@
 import csv
 
+import pygame
+
 from .widget import Widget
 from CONSTANTS import *
 import plates
@@ -79,12 +81,38 @@ class Camera:
         h = round(rect.height * self.zoom, 1)
         return pygame.Rect(x, y, w, h)
 
+    def get_hp_color(self, percent):
+        if percent > 0.5:
+            g = 255
+            r = int(255 * (1 - percent) * 2)
+        else:
+            r = 255
+            g = int(255 * percent * 2)
+        return r, g, 0
+
     def render(self, surface):
         surface.fill('#edc9a5')
-        for sprite in self.sprite_group:
-            # print('rendering')
-            transformed_rect = self.apply(sprite.rect)
-            surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
+        for plate in self.field.plates:
+            transformed_rect = self.apply(plate.sprite.rect)
+            surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
+            if isinstance(plate, plates.TowerPlate) and plate.tower:
+                rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom), 0)
+
+                surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
+
+                # TODO: ПРОВЕРКА НА ОТОБРАЖЕНИЕ HP - НАСТРОЙКА В ОТДЕЛЬНОМ ФАЙЛЕ
+                hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
+                                      transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
+                pygame.draw.rect(surface, (0, 0, 0), hp_bord)
+                percent_of_hp = plate.tower.hp / plate.tower.maxhp
+                hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
+                                     (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
+
+                pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
+
+        # for sprite in self.sprite_group:
+        #     transformed_rect = self.apply(sprite.rect)
+        #     surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
 
 
 class Field(Widget):
@@ -97,7 +125,9 @@ class Field(Widget):
         self.x, self.y, self.width, self.height = rect
         self.surface = pygame.Surface((self.rect.width, self.rect.height))
         self.sprites = pygame.sprite.Group()
-        self.level_map = self.unpack_map(level)
+        self.plates = []
+        self.level_map = []
+        self.unpack_map(level)
         self.is_dragging_unit = False  # Флаг, указывающий, что игрок перетаскивает plate, башню или инструмент
         self.camera = Camera(self)
 
@@ -110,13 +140,17 @@ class Field(Widget):
         if cell:
             return self.level_map[int(cell[1])][int(cell[0])].can_use_unit(unit)
 
+    def apply_unit(self, mousepos, unit):
+        cell = self.get_cell(mousepos)
+        self.level_map[int(cell[1])][int(cell[0])].apply_unit(unit)
+
     def get_cell(self, mouse_pos):
 
         x_mouse, y_mouse = mouse_pos
         if self.rect.collidepoint(mouse_pos):
             field_top_x, field_top_y = self.rect.topleft
-            x_cell = (x_mouse - field_top_x) // (32 * self.camera.zoom)
-            y_cell = (y_mouse - field_top_y) // (32 * self.camera.zoom)
+            x_cell = (x_mouse - field_top_x + self.camera.offset_x * self.camera.zoom) // (32 * self.camera.zoom)
+            y_cell = (y_mouse - field_top_y + self.camera.offset_y * self.camera.zoom) // (32 * self.camera.zoom)
             return x_cell, y_cell
         return None
 
@@ -126,14 +160,14 @@ class Field(Widget):
         surface.blit(self.surface, self.rect)
 
     def unpack_map(self, filename):
-        level = []
         with open(filename, 'r', encoding='utf-8') as level_file:
             reader = csv.reader(level_file, delimiter=';')
             for i, row in enumerate(reader, 0):
-                level.append([])
+                self.level_map.append([])
                 for j, plate in enumerate(row, 0):
-                    level[i].append(self.create_plate(plate, j, i))
-        return level
+                    plate = self.create_plate(plate, j, i)
+                    self.level_map[i].append(plate)
+                    self.plates.append(plate)
 
     def create_plate(self, code: str, x, y):
         rotation = code[-1]

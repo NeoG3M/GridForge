@@ -5,7 +5,6 @@ from Windows.MenuWindow import *
 
 class GridForge:
     __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow}
-    __GAME_EVENTS = GAME_EVENTS
 
     def __init__(self):
         pygame.init()
@@ -19,21 +18,18 @@ class GridForge:
         self.switch_window('start', self)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or event.type == self.__GAME_EVENTS['SHUTDOWN']:
+                if event.type == pygame.QUIT or event.type == GAME_EVENTS['SHUTDOWN']:
                     terminate()
                 self.current_window.update(event)
                 if event.type == GAME_EVENTS['SWITCH_WINDOW']:
                     self.switch_window(event.name, event.arg)
-            self.clock.tick(FPS)
             pygame.display.flip()
+            self.clock.tick(FPS)
 
     def switch_window(self, new_window, *args):
         if self.current_window:
             self.current_window.stop()
         self.current_window = self.__WINDOWS[new_window](*args)
-
-    def get_event(self, event):
-        return self.__GAME_EVENTS.get(event, None)
 
 
 # Example usage
