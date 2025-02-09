@@ -1,4 +1,4 @@
-import pygame
+from Statistic import Statistic
 
 from utils import *
 from Windows import *
@@ -10,22 +10,27 @@ class GridForge:
 
     def __init__(self):
         pygame.init()
+
+        self.connection = Statistic()
         pygame.mixer.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
-        pygame.display.set_caption('GridForge')
         self.current_window = None
+
+        pygame.display.set_caption('GridForge')
 
     def run_game(self):
         game_running = True
-        self.switch_window('level', self)
+        self.switch_window('start', self)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == GAME_EVENTS['SHUTDOWN']:
+                    self.connection.close()
                     terminate()
                 self.current_window.update(event)
                 if event.type == GAME_EVENTS['SWITCH_WINDOW']:
                     self.switch_window(event.name, event.arg)
+            self.clock.tick(FPS)
             pygame.display.flip()
             self.clock.tick(FPS)
 

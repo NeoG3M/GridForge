@@ -60,8 +60,10 @@ from Widgets import Widget, WidgetGroup
 class WidgetBlock(Widget):
     GRID, VERTICAL, HORIZONTAL = 'grid', 'vertical', 'horizontal'
 
-    def __init__(self, rect, color=pygame.Color('#3e1c03'), layout_mode=GRID, on_click=None):
-        super().__init__(rect, color, on_click)
+    def __init__(self, rect, background_color=pygame.Color('#3e1c03'),
+                 border_color=pygame.Color('gold'), layout_mode=GRID, on_click=None):
+        super().__init__(rect, background_color, on_click)
+        self.border_color = border_color
         self.widgets = WidgetGroup()
         self.scroll_offset = 0
         self.scrollbar_rect = pygame.Rect(rect[0] + rect[2] - 3, rect[1], 3, rect[3])
@@ -97,8 +99,11 @@ class WidgetBlock(Widget):
 
     def distribute_vertical(self):
         y_offset = self.rect.y - self.scroll_offset
-        for widget in self.widgets.widgets:
-            widget.rect.topleft = (self.rect.x, y_offset)
+
+        for i in range(len(self.widgets.widgets)):
+            widget = self.widgets.widgets[i]
+            queue_offset = y_offset + 5 + i * 5
+            widget.rect.topleft = (self.rect.x + 5, queue_offset)
             y_offset += widget.rect.height
 
     def distribute_horizontal(self):
@@ -136,7 +141,7 @@ class WidgetBlock(Widget):
         super().draw(surface)
         self.widgets.draw(surface)
         pygame.draw.rect(
-            surface, pygame.Color('orange'),
+            surface, self.border_color,
             (self.rect.x + 4, self.rect.y + 4,
              self.rect.width - 8, self.rect.height - 8), 2)
         if self.get_max_scroll() > 0:

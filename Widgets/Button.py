@@ -33,7 +33,7 @@ class Button(Widget):
         pygame.draw.rect(
             text_surface, self.text_color,
             (frame_border, frame_border,
-             self.rect.width - frame_border * 2,
-             self.rect.height - frame_border * 2), 2
+            self.rect.width - frame_border * 2,
+            self.rect.height - frame_border * 2), 2
         )
         surface.blit(text_surface, (self.rect.x, self.rect.y))
