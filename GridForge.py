@@ -1,4 +1,6 @@
-from CONSTANTS import *
+import pygame
+
+from utils import *
 from Windows import *
 from Windows.MenuWindow import *
 
@@ -8,6 +10,7 @@ class GridForge:
 
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(DISPLAY_SIZE)
         pygame.display.set_caption('GridForge')
@@ -15,7 +18,7 @@ class GridForge:
 
     def run_game(self):
         game_running = True
-        self.switch_window('start', self)
+        self.switch_window('level', self)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or event.type == GAME_EVENTS['SHUTDOWN']:

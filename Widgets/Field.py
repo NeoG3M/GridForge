@@ -1,10 +1,8 @@
 import csv
 
-import pygame
-
-from .widget import Widget
-from CONSTANTS import *
 import plates
+from utils import *
+from .widget import Widget
 
 
 class Camera:
@@ -28,6 +26,12 @@ class Camera:
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
         self.last_global_mouse_pos = (0, 0)
+        """
+        Инициализация камеры. 
+        :param widget_rect: pygame.Rect, определяющий границы виджета на экране.
+        :param map_matrix: двумерный массив (матрица), представляющий плитки карты.
+        :param sprite_group: группа спрайтов, которые нужно отрисовать.
+        """
 
     def handle_event(self, event):
         """
@@ -135,8 +139,8 @@ class Field(Widget):
         self.camera.handle_event(event)
         super().handle_event(event)
 
-    def check_cell(self, mousepos, unit):
-        cell = self.get_cell(mousepos)
+    def check_cell(self, mouse_pos: tuple, unit):
+        cell = self.get_cell(mouse_pos)
         if cell:
             return self.level_map[int(cell[1])][int(cell[0])].can_use_unit(unit)
 

@@ -1,4 +1,4 @@
-from CONSTANTS import *
+from utils import *
 from .Window import Window
 
 

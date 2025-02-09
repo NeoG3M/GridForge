@@ -1,7 +1,7 @@
 import pygame
 
 from Widgets.Button import Button
-from CONSTANTS import ALL_SPRITES, DISPLAY_SIZE, terminate
+from utils import ALL_SPRITES, DISPLAY_SIZE, terminate
 from Windows.Window import Window
 
 
