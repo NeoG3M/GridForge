@@ -19,3 +19,7 @@ class TowerUnit(Unit):
     def __init__(self, name: str, tower, description: str = ''):
         self.tower = tower
         super().__init__(name, tower.img, description)
+
+
+class RepairUnit(Unit):
+    pass

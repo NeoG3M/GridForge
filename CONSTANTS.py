@@ -13,10 +13,14 @@ def terminate():
 
 
 GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
-               'PICK_UNIT': pygame.USEREVENT + 10}
+               'PICK_UNIT': pygame.USEREVENT + 10, 'REACTOR_EXPLOSION': pygame.USEREVENT + 11}
 
 
 def get_event(event):
     return GAME_EVENTS.get(event, None)
+
+
+def raise_event(event: str, **kwargs):
+    pygame.event.post(pygame.event.Event(get_event(event), **kwargs))
 
 # __all__ = ['DISPLAY_SIZE', 'FPS', 'ALL_SPRITES', 'terminate']

@@ -1,6 +1,7 @@
 import pygame
 
-from Units import TowerUnit
+from CONSTANTS import raise_event
+from Units import *
 
 PLATE_SIZE = 32
 
@@ -105,3 +106,41 @@ class TowerPlate(DynamicPlate):
 
         self.tower_sprite.image = self.tower_image
         self.tower_sprite.rect = pygame.Rect(self.sprite.rect.x, self.sprite.rect.y, PLATE_SIZE, PLATE_SIZE)
+
+
+class TrailPlate(PlateConstructor):
+    def is_solid(self) -> bool:
+        return False
+
+
+class ReactorPlate(DynamicPlate):
+    class Reactor:
+        def __init__(self, maxhp):
+            self.maxhp = maxhp
+            self.hp = maxhp
+
+        def heal_hp(self, amount):
+            self.hp += amount
+            self.hp = min(self.hp, self.maxhp)
+
+        def decrease_hp(self, amount):
+            self.hp -= amount
+            self.hp = max(self.hp, 0)
+            if self.hp == 0:
+                raise_event('REACTOR_EXPLOSION')
+
+    def __init__(self, reactor_hp, img_name: str, states: int, rotation: str, x: int, y: int,
+                 group: pygame.sprite.Group):
+        super().__init__(img_name, states, rotation, x, y, group)
+        self.reactor = self.Reactor(reactor_hp)
+
+    def can_use_unit(self, unit):
+        if isinstance(unit, RepairUnit):
+            return self.reactor.hp < self.reactor.maxhp
+        return False
+
+    def is_solid(self) -> bool:
+        return True
+
+    def get_info(self) -> str:
+        return 'Это основной реактор - важнейший элемент нашей победы! Это спасение наших жизней от угрозы республики!'

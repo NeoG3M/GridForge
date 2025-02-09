@@ -1,6 +1,4 @@
-import pygame.sprite
-
-from GridForge import get_event
+from CONSTANTS import *
 from .Window import Window
 from Widgets.Field import Field
 from Widgets.widgetBlock import WidgetBlock
@@ -24,7 +22,7 @@ class GameWindow(Window):
         self.sprites = pygame.sprite.Group()
 
     def create_widgets(self):
-        self.field = Field((400, 50, 700, 560), level='level/level_0/map.csv')
+        self.field = Field((400, 50, 700, 560), level='level/level_0/')
         self.widgets.add_widget(self.field)
         self.towers_block = WidgetBlock((20, 50, 290, 560))
 
@@ -44,8 +42,7 @@ class GameWindow(Window):
         un.create_as_widget(self.towers_block, (70, 98))
 
         self.widgets.add_widget(self.towers_block)
-        exit_event = lambda: pygame.event.post(
-            pygame.event.Event(get_event('SWITCH_WINDOW'), name='start', arg=[self.gridforge]))
+        exit_event = lambda: raise_event('SWITCH_WINDOW', name='start', arg=[self.gridforge])
         self.widgets.add_widget(Button((20, 10, 100, 30), pygame.Color('orange'), 'Меню', on_click=exit_event))
 
     def display_picked_unit(self):

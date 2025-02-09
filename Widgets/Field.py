@@ -1,6 +1,5 @@
 import csv
-
-import pygame
+import json
 
 from .widget import Widget
 from CONSTANTS import *
@@ -118,16 +117,24 @@ class Camera:
 class Field(Widget):
     __plates = {'W0': {'img_name': 'wall0'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
                 'E': {'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0, 'states': 1},
-                'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 1, 'states': 1}}
+                'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 1, 'states': 1},
+                'R': {'img_name': 'reactor', 'states': 5, 'rotation': 'N'}}
 
     def __init__(self, rect, level: str):
         super().__init__(rect)
+        self.level_directory = level
+
         self.x, self.y, self.width, self.height = rect
         self.surface = pygame.Surface((self.rect.width, self.rect.height))
         self.sprites = pygame.sprite.Group()
+
         self.plates = []
         self.level_map = []
-        self.unpack_map(level)
+        self.path_map = []
+        self.danger_path_map = []
+        self.reactor_coords = (0, 0)
+        self.unpack_map(self.level_directory + 'map.csv')
+
         self.is_dragging_unit = False  # Флаг, указывающий, что игрок перетаскивает plate, башню или инструмент
         self.camera = Camera(self)
 
@@ -164,10 +171,18 @@ class Field(Widget):
             reader = csv.reader(level_file, delimiter=';')
             for i, row in enumerate(reader, 0):
                 self.level_map.append([])
+                self.danger_path_map.append([])
+                self.path_map.append([])
                 for j, plate in enumerate(row, 0):
                     plate = self.create_plate(plate, j, i)
+                    if isinstance(plate, plates.ReactorPlate):
+                        self.reactor_coords = (j, i)
                     self.level_map[i].append(plate)
                     self.plates.append(plate)
+                    if isinstance(plate, plates.TrailPlate) or isinstance(plate, plates.ReactorPlate):
+                        self.path_map[i].append(0)
+                    else:
+                        self.path_map[i].append(1)
 
     def create_plate(self, code: str, x, y):
         rotation = code[-1]
@@ -177,3 +192,7 @@ class Field(Widget):
             return plates.PlateConstructor(x=x, y=y, img_name=code, **self.__plates['E'], group=self.sprites)
         elif code.startswith('TB'):
             return plates.TowerPlate(**self.__plates[code], x=x, y=y, group=self.sprites)
+        elif code.startswith('R'):
+            with open(self.level_directory + 'lvl.json', 'r', encoding='UTF8') as lvl_file:
+                lvl = json.load(lvl_file)
+                return plates.ReactorPlate(lvl['reactor']['hp'], **self.__plates[code], x=x, y=y, group=self.sprites)
