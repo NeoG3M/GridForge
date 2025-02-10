@@ -4,3 +4,4 @@ from .Settings import Settings
 from .StartWindow import StartWindow
 from .Window import Window
 from .MenuWindow import MenuWindow
+from .Victory_window import VictoryWindow
