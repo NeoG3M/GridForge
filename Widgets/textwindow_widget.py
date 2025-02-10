@@ -13,7 +13,7 @@ class TextWindowWidget(Widget):
         self.wrap_text()
 
     def wrap_text(self):
-        words = self.text.split()
+        words = self.text.split(' ')
         lines = []
         line = ''
         for word in words:

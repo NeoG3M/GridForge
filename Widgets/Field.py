@@ -151,7 +151,7 @@ class Field(Widget):
     def __init__(self, rect, level: str, game_window):
         self.game_window = game_window
         super().__init__(rect)
-        self.level_directory = 'level/' + level + '/'
+        self.level_directory = f'level/level_{level}/'
 
         self.x, self.y, self.width, self.height = rect
         self.surface = pygame.Surface((self.rect.width, self.rect.height))

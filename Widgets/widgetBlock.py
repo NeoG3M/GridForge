@@ -37,10 +37,9 @@ class ScrollBar(Widget):
 
     def handle_rel_vertical(self, rel):
         if (self.rect.y + rel <= self.min_position) or (self.rect.y + self.rect.height + rel >= self.max_position):
-            print(self.min_position, self.max_position, self.rect.y, self.rect.height)
+            # print(self.min_position, self.max_position, self.rect.y, self.rect.height)
             return 0
         self.rect.y += rel
-        print(self.rect.y)
 
     def handle_rel_horizontal(self, rel):
         if (self.rect.x + rel <= self.min_position) or (self.rect.x + self.rect.width + rel >= self.max_position):
