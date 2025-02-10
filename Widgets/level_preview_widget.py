@@ -1,12 +1,13 @@
+from typing import Callable
+
 import pygame
 
 from Widgets.widget import Widget
-from typing import Callable
 
 
 class LevelPreview(Widget):
     def __init__(self, rect, background_color=pygame.Color("black"), border_color=pygame.Color("orange"),
-                information="None", count_of_enemies=0, count_of_towers=0, rewards=None, on_click: Callable = None):
+                 information="None", count_of_enemies=0, count_of_towers=0, rewards=None, on_click: Callable = None):
         super().__init__(rect, background_color, on_click)
 
         self.border_color = border_color

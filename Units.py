@@ -1,6 +1,6 @@
 import pygame
 
-from Widgets.widgetBlock import WidgetBlock
+from Widgets import WidgetBlock
 from Widgets.unitWidget import UnitWidget
 
 
@@ -31,7 +31,8 @@ class RepairUnit(HelpUnit):
     def __init__(self):
         icon = pygame.image.load('data/icons/repair.png')
         super().__init__('', icon,
-                         'Самый обычный инструмент для починки старого хлама. Восстанавливает 30% здоровья. Инструмент на века. \nЦЕНА:50',
+                         'Самый обычный инструмент для починки старого хлама.'
+                         ' Восстанавливает 30% здоровья. Инструмент на века. \nЦЕНА:50',
                          50)
         self.heal_am = 0.3
 

@@ -1,5 +1,4 @@
 import csv
-
 import json
 
 import Units
@@ -10,13 +9,7 @@ from .widget import Widget
 
 class Camera:
     def __init__(self, field):
-        """
-        Инициализация камеры.
 
-        :param widget_rect: pygame.Rect, определяющий границы виджета на экране.
-        :param map_matrix: двумерный массив (матрица), представляющий плитки карты.
-        :param sprite_group: группа спрайтов, которые нужно отрисовать.
-        """
         self.field = field
         self.widget_rect = field.rect
         self.map_matrix = field.level_map
@@ -29,6 +22,13 @@ class Camera:
         self.dragging = False  # Флаг, указывает, перемещает ли игрок камеру
         self.last_mouse_pos = None  # Последняя позиция мыши для расчёта сдвига
         self.last_global_mouse_pos = (0, 0)
+        """
+        Инициализация камеры.
+
+        :param widget_rect: pygame.Rect, определяющий границы виджета на экране.
+        :param map_matrix: двумерный массив (матрица), представляющий плитки карты.
+        :param sprite_group: группа спрайтов, которые нужно отрисовать.
+        """
 
     def handle_event(self, event):
         """
@@ -82,7 +82,8 @@ class Camera:
         h = round(rect.height * self.zoom, 1)
         return pygame.Rect(x, y, w, h)
 
-    def get_hp_color(self, percent):
+    @staticmethod
+    def get_hp_color(percent):
         if percent > 0.5:
             g = 255
             r = int(255 * (1 - percent) * 2)
@@ -262,7 +263,7 @@ class Field(Widget):
         return self.reactor_coords
 
     def create_plate(self, code: str, x, y):
-        rotation = code[-1]
+        # rotation = code[-1]
         if code.startswith('W'):
             return plates.SolidPlate(**self.__plates[code], x=x, y=y, group=self.sprites)
         elif code.startswith('E'):

@@ -9,9 +9,9 @@ from utils import *
 class Enemy:
     FACING = {'N': 0, 'W': 90, 'S': 180, 'E': 270}
 
-    def __init__(self, start_plate, maxhp, move_speed, reward, img_name, damage, attack_range, attack_speed,
+    def __init__(self, start_plate, max_hp, move_speed, reward, img_name, damage, attack_range, attack_speed,
                  bullet_class, bullet_outpoints, game_field,
-                 is_selfhealing=False, healing_amount=0,
+                 is_self_healing=False, healing_amount=0,
                  is_flying=False):
         self.img = pygame.image.load('data/enemies/' + img_name + '.png')
         self.top_img = self.img.subsurface((32, 0, 32, 32))
@@ -20,7 +20,7 @@ class Enemy:
         spr_img = self.base_img.copy()
         spr_img.blit(self.top_img, (0, 0))
         self.sprite.image = spr_img
-
+        self.next_plate = None
         self.base_facing = 'W'
         self.top_rotation = 90
         self.sprite.rect = pygame.Rect(0, 0, 32, 32)
@@ -28,10 +28,10 @@ class Enemy:
         self.cur_position = (start_plate[0] * 32, start_plate[1] * 32)
         self.center = (self.cur_position[0] + 16, self.cur_position[1] + 16)
         self.velocity = [0, 0]
-
-        self.maxhp = maxhp
-        self.hp = maxhp
-        self.is_healing = is_selfhealing
+        self.is_flying = is_flying
+        self.max_hp = max_hp
+        self.hp = max_hp
+        self.is_healing = is_self_healing
         self.heal_amount = healing_amount
 
         self.speed = move_speed
@@ -87,8 +87,8 @@ class Enemy:
 
     def heal_hp(self, amount):
         self.hp += amount
-        if self.hp > self.maxhp:
-            self.hp = self.maxhp
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp
 
     def decrease_hp(self, amount):
         self.hp -= amount
@@ -111,7 +111,8 @@ class Enemy:
                     en_y - self.center[1]) ** 2) > self.attack_range:
                 self.target = None
 
-    def heuristic(self, a, b):
+    @staticmethod
+    def heuristic(a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
     def search_path(self, path_map, danger_map):
@@ -145,7 +146,7 @@ class Enemy:
             neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
 
             for nx, ny in neighbors:
-                if 0 <= nx < rows and 0 <= ny < cols and path_map[nx][ny] == 0:  # Проходимость
+                if rows > nx >= 0 == path_map[nx][ny] and 0 <= ny < cols:  # Проходимость
                     tentative_g_score = g_score[current] + 1 + danger_map[nx][ny]  # + штраф
 
                     if (nx, ny) not in g_score or tentative_g_score < g_score[(nx, ny)]:

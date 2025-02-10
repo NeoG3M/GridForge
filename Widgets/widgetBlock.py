@@ -1,8 +1,8 @@
+from typing import Callable
+
 import pygame
 
-from math import ceil
 from Widgets import Widget, WidgetGroup
-from typing import Callable
 
 
 class ScrollBar(Widget):
@@ -118,7 +118,8 @@ class WidgetBlock(Widget):
                 self.scroll_offset = max(0, min(self.scroll_offset, self.get_max_scroll()))
                 self.distribute_widgets()
 
-    def get_max_scroll(self):
+    @staticmethod
+    def get_max_scroll():
         return 0
         # if self.layout_mode in [self.GRID, self.VERTICAL]:
         #     total_height = sum(widget.rect.height for widget in self.widgets.widgets)

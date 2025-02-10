@@ -2,9 +2,9 @@ import pygame.time
 
 from Units import *
 from Widgets import *
+from enemies import Enemy
 from utils import *
 from .Window import Window
-from enemies import Enemy
 
 
 class GameWindow(Window):
@@ -19,7 +19,9 @@ class GameWindow(Window):
         self.is_dragging_unit = False
         self.picked_unit = None
         self.last_mouse_pos = (0, 0)
-
+        self.field = None
+        self.towers_block = None
+        self.units_block = None
         self.create_widgets()
         self.add_background('black')
         self.sprites = pygame.sprite.Group()
@@ -63,9 +65,12 @@ class GameWindow(Window):
 
         self.widgets.add_widget(NumberWidget(self, (140, 10, 170, 50)))
 
-        exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
+        exit_event = self.exit_event
         self.widgets.add_widget(
             Button((20, 10, 100, 50), pygame.Color('black'), 'Меню', pygame.Color('orange'), on_click=exit_event))
+
+    def exit_event(self):
+        raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
 
     def display_picked_unit(self):
         if self.is_dragging_unit:

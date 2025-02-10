@@ -1,17 +1,15 @@
 import pygame
 
 from Widgets.Button import Button
-from utils import all_sprites, DISPLAY_SIZE, terminate
-from Widgets.widgetGroup import WidgetGroup
-from Widgets.widgetBlock import WidgetBlock
 from Widgets.level_preview_widget import LevelPreview
-from Widgets.Icon import Icon
-
+from Widgets.widgetBlock import WidgetBlock
+from Widgets.widgetGroup import WidgetGroup
 from Windows.Window import Window
+from utils import all_sprites, DISPLAY_SIZE, terminate
 
 
 class MenuWindow(Window):
-    __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
+    __background_sprite = pygame.sprite.Sprite(all_sprites)
     __background_sprite.image = pygame.image.load(f"data/menu_window_screen.png")
     __background_sprite.rect = __background_sprite.image.get_rect()
     __BUTTON_DICT: dict = {'Выйти': terminate}
@@ -35,9 +33,13 @@ class MenuWindow(Window):
         #     if button.rect.collidepoint(mouse_pos):
         #         self.__BUTTON_DICT[button.text]()
 
-    def create_widgets(self):
+    @staticmethod
+    def exit_event():
         from GridForge import get_event
-        exit_event = lambda: pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
+        pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
+
+    def create_widgets(self):
+        exit_event = self.exit_event
         self.widgets.add_widget(
             Button((DISPLAY_SIZE[0] - 160, 20, 150, 50),
                    pygame.Color("gold"), 'Выйти', on_click=exit_event)
@@ -67,12 +69,12 @@ class MenuWindow(Window):
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
 
-        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
-                      "achievement_icon.png", (60, 60), self.sprites)
-        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
-                      "shop_icon.png", (60, 60), self.sprites)
-        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
-                      "support_authors_icon.png", (60, 60), self.sprites)
+        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
+        #               "achievement_icon.png", (60, 60), self.sprites)
+        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
+        #               "shop_icon.png", (60, 60), self.sprites)
+        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
+        #               "support_authors_icon.png", (60, 60), self.sprites)
 
         # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
         # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
