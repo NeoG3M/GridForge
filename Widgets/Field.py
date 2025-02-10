@@ -2,6 +2,7 @@ import csv
 
 import json
 
+import Units
 import plates
 from utils import *
 from .widget import Widget
@@ -98,7 +99,7 @@ class Camera:
         # print()
         # for plate in self.field.plates:
         y_edge = min(int((self.offset_y + 32 * (self.field.rect.h / self.zoom // 32)) // 32 + 2),
-        len(self.map_matrix))
+                     len(self.map_matrix))
         x_edge = min(int((self.offset_x + self.field.rect.w * self.zoom) // 32 + 2), len(self.map_matrix[0]))
         for y in range(int(self.offset_y // 32), y_edge):
             for x in range(int(self.offset_x // 32), x_edge):
@@ -124,6 +125,15 @@ class Camera:
             enemy_img = enemy.get_scaled_image(self.zoom)
             transformed_rect = self.apply(pygame.Rect(*enemy.cur_position, 32, 32))
             surface.blit(enemy_img, transformed_rect)
+
+            hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
+                                  transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
+            pygame.draw.rect(surface, (0, 0, 0), hp_bord)
+            percent_of_hp = enemy.hp / enemy.maxhp
+            hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
+                                 (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
+
+            pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
         # for sprite in self.sprite_group:
         #     transformed_rect = self.apply(sprite.rect)
         #     surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
@@ -133,11 +143,12 @@ class Field(Widget):
     __plates = {'W0': {'img_name': 'W0', 'rotation': 'N'}, 'W1': {'img_name': 'W1', 'rotation': 'N'},
                 'W2': {'img_name': 'W2', 'rotation': 'N'}, 'E0': {'img_name': 'E0', 'rotation': 'N'},
                 'E': {'rotation': 'N'}, 'TB0': {'img_name': 'old_TB', 'rotation': 'N', 'level': 0, 'states': 1},
-                'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 1, 'states': 1},
+                'TB1': {'img_name': 'tb_gama', 'rotation': 'N', 'level': 3, 'states': 1},
                 'R': {'img_name': 'reactor', 'states': 6, 'rotation': 'N'},
                 'T': {'rotation': 'N'}}
 
-    def __init__(self, rect, level: str):
+    def __init__(self, rect, level: str, game_window):
+        self.game_window = game_window
         super().__init__(rect)
         self.level_directory = 'level/' + level + '/'
 
@@ -165,10 +176,16 @@ class Field(Widget):
     def check_cell(self, mouse_pos: tuple, unit):
         cell = self.get_cell(mouse_pos)
         if cell:
-            return self.level_map[int(cell[1])][int(cell[0])].can_use_unit(unit)
+            plate = self.level_map[int(cell[1])][int(cell[0])]
+            if isinstance(plate, plates.TowerPlate) and isinstance(unit, Units.TowerUnit) and plate.tower:
+                return False
+            if unit.price > self.game_window.current_money:
+                return False
+            return plate.can_use_unit(unit)
 
     def apply_unit(self, mousepos, unit):
         cell = self.get_cell(mousepos)
+        self.game_window.current_money -= unit.price
         self.level_map[int(cell[1])][int(cell[0])].apply_unit(unit)
         if isinstance(unit, plates.TowerUnit):
             self.update_danger_map()

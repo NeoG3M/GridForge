@@ -1,5 +1,39 @@
 {
   "reactor": {
     "hp": 500
+  },
+  "reward": {
+    "towers": [
+      1
+    ],
+    "levels": [
+      1
+    ]
+  },
+  "timings": {
+    "0": {
+      "money": 100,
+      "enemies": []
+    },
+    "6": {
+      "money": 10,
+      "enemies": [
+        {
+          "start_plate": [
+            15,
+            3
+          ],
+          "maxhp": 50,
+          "move_speed": 4,
+          "reward": 30,
+          "img_name": "en_test",
+          "damage": 3,
+          "attack_range": 64,
+          "attack_speed": 30,
+          "bullet_class": 0,
+          "bullet_outpoints": []
+        }
+      ]
+    }
   }
 }

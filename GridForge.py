@@ -1,4 +1,4 @@
-import pygame
+import pygame.time
 
 from utils import *
 from Windows import *
@@ -24,7 +24,7 @@ class GridForge:
 
     def run_game(self):
         game_running = True
-        self.switch_window('level', self)
+        self.switch_window('level', self, 'level_0')
         pygame.time.set_timer(get_event('TICK_UPDATE'), 50)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
