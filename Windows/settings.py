@@ -1,4 +1,4 @@
-from .Window import Window
+from .window import Window
 
 
 class Settings(Window):

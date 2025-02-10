@@ -1,10 +1,10 @@
 import pygame
 
-from Widgets.Button import Button
+from Widgets.button import Button
 from Widgets.level_preview_widget import LevelPreview
-from Widgets.widgetBlock import WidgetBlock
-from Widgets.widgetGroup import WidgetGroup
-from Windows.Window import Window
+from Widgets.widget_block import WidgetBlock
+from Widgets.widget_group import WidgetGroup
+from Windows.window import Window
 from utils import all_sprites, DISPLAY_SIZE, terminate
 
 
