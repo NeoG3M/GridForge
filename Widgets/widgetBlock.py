@@ -54,7 +54,52 @@
 
 import pygame
 
+from math import ceil
 from Widgets import Widget, WidgetGroup
+from typing import Callable
+
+
+class ScrollBar(Widget):
+    GRID, VERTICAL, HORIZONTAL = 'grid', 'vertical', 'horizontal'
+
+    def __init__(self, rect: tuple, min_position, max_position, layout_mod=VERTICAL,
+                 color: pygame.Color = pygame.Color('black'), second_color=pygame.Color("gold"),
+                 on_click: Callable = None):
+        super().__init__(rect, color, on_click)
+        self.second_color = second_color
+        self.min_position = min_position
+        self.max_position = max_position
+        self.layout_mode = layout_mod
+
+    def draw(self, surface: pygame.Surface):
+        super().draw(surface)
+        middle = self.rect.y + self.rect.height // 2
+        pygame.draw.line(surface, self.second_color, (self.rect.x + 2, middle - 4),
+                         (self.rect.x + self.rect.width - 2, middle - 4))
+        pygame.draw.line(surface, self.second_color, (self.rect.x + 2, middle),
+                         (self.rect.x + self.rect.width - 2, middle))
+        pygame.draw.line(surface, self.second_color, (self.rect.x + 2, middle + 4),
+                         (self.rect.x + self.rect.width - 2, middle + 4))
+
+    def handle_event(self, event: pygame.MOUSEMOTION):
+        rel = event.rel[1] if self.layout_mode in (self.GRID, self.VERTICAL) else event.rel[0]
+        rel %= self.rect.height // 2
+        if self.layout_mode in (self.GRID, self.VERTICAL):
+            self.handle_rel_vertical(rel)
+        else:
+            self.handle_rel_horizontal(rel)
+
+    def handle_rel_vertical(self, rel):
+        if (self.rect.y + rel <= self.min_position) or (self.rect.y + self.rect.height + rel >= self.max_position):
+            print(self.min_position, self.max_position, self.rect.y, self.rect.height)
+            return 0
+        self.rect.y += rel
+        print(self.rect.y)
+
+    def handle_rel_horizontal(self, rel):
+        if (self.rect.x + rel <= self.min_position) or (self.rect.x + self.rect.width + rel >= self.max_position):
+            return 0
+        self.rect.x += rel
 
 
 class WidgetBlock(Widget):
@@ -102,8 +147,8 @@ class WidgetBlock(Widget):
 
         for i in range(len(self.widgets.widgets)):
             widget = self.widgets.widgets[i]
-            queue_offset = y_offset + 5 + i * 5
-            widget.rect.topleft = (self.rect.x + 5, queue_offset)
+            queue_offset = y_offset + 13 + i * 4
+            widget.rect.topleft = (self.rect.x + 14, queue_offset)
             y_offset += widget.rect.height
 
     def distribute_horizontal(self):
@@ -137,12 +182,12 @@ class WidgetBlock(Widget):
         #     return max(0, total_width - self.rect.width)
 
     def draw(self, surface):
-
-        super().draw(surface)
-        self.widgets.draw(surface)
+        pygame.draw.rect(surface, self.color, self.rect)
         pygame.draw.rect(
             surface, self.border_color,
             (self.rect.x + 4, self.rect.y + 4,
              self.rect.width - 8, self.rect.height - 8), 2)
+
+        self.widgets.draw(surface)
         if self.get_max_scroll() > 0:
             pygame.draw.rect(surface, self.scrollbar_color, self.scrollbar_rect)

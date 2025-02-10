@@ -59,9 +59,10 @@ class MenuWindow(Window):
         )
 
         block = WidgetBlock((20, 330, 250, 300), pygame.Color("black"),
-                            pygame.Color("gold"), layout_mode='grid')
+                            pygame.Color("gold"), layout_mode='vertical')
         self.widgets.add_widget(block)
 
+        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
         block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))

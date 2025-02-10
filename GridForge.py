@@ -1,7 +1,6 @@
-from Statistic import Statistic
-from CONSTANTS import *
 import pygame
 
+from Statistic import Statistic
 from utils import *
 from Windows import *
 from Windows.MenuWindow import *

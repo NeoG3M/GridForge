@@ -6,8 +6,7 @@ from utils import ALL_SPRITES, DISPLAY_SIZE
 
 class StartWindow(Window):
     __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
-    # __background_sprite.image = pygame.image.load("data/start_window_screen.png")
-    __background_sprite.image = pygame.Surface(DISPLAY_SIZE)
+    __background_sprite.image = pygame.image.load("data/start_window_screen.png")
     __background_sprite.rect = __background_sprite.image.get_rect()
     """This class realises the start window of the game"""
 
