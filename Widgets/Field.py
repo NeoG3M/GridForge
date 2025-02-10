@@ -134,6 +134,18 @@ class Camera:
                                  (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
 
             pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
+
+        # Реактор
+        reactor_x, reactor_y = self.field.get_reactor_coords()
+        transformed_rect = self.apply(pygame.Rect(reactor_x * 32, reactor_y * 32, 32, 32))
+        hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
+                              transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
+        pygame.draw.rect(surface, (0, 0, 0), hp_bord)
+        percent_of_hp = self.field.get_reactor().hp / self.field.get_reactor().maxhp
+        hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
+                             (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
+
+        pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
         # for sprite in self.sprite_group:
         #     transformed_rect = self.apply(sprite.rect)
         #     surface.blit(pygame.transform.scale_by(sprite.image, self.zoom), transformed_rect)
