@@ -1,7 +1,7 @@
 import pygame
 
 from Widgets.widget import Widget
-from Windows.Window import Window
+from Windows.window import Window
 
 
 class ScrollBar(Widget):

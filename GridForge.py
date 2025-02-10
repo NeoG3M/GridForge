@@ -1,6 +1,6 @@
 import pygame.time
 
-from Statistic import Statistic
+from statistic import Statistic
 from Windows import *
 from utils import *
 

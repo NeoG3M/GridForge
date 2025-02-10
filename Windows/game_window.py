@@ -1,10 +1,10 @@
 import pygame.time
 
-from Units import *
+from units import *
 from Widgets import *
 from enemies import Enemy
 from utils import *
-from .Window import Window
+from .window import Window
 
 
 class GameWindow(Window):

@@ -1,5 +1,5 @@
 from utils import *
-from .Window import Window
+from .window import Window
 
 
 class AchievementWindow(Window):
