@@ -7,15 +7,7 @@ from utils import *
 class Tower:
     def __init__(self, maxhp, damage, attack_speed, attack_range, img_name, price, start_consuption, bullet_class,
                  bullet_outpoints: list[tuple[float, float]]):
-        '''
-        :param maxhp:
-        :param damage:
-        :param attack_speed: Промежуток между выстрелами - количество обновлений(FPS) между ними
-        :param attack_range:
-        :param img_name:
-        :param price:
-        :param start_consuption:
-        '''
+
         self.img_name = img_name
         self.img = pygame.image.load('towers/img/' + img_name + '.png')
         self.sprite = pygame.sprite.Sprite(all_sprites)
@@ -37,7 +29,15 @@ class Tower:
 
         self.price = price
         self.consumption = start_consuption
-
+        """
+        :param maxhp:
+        :param damage:
+        :param attack_speed: Промежуток между выстрелами - количество обновлений(FPS) между ними
+        :param attack_range:
+        :param img_name:
+        :param price:
+        :param start_consuption:
+        """
     def create_child(self):
 
         tw = Tower(self.maxhp, self.damage, self.attack_speed, self.attack_range, self.img_name, self.price,
@@ -86,7 +86,7 @@ class Tower:
         if self.hp <= 0:
             self.hp = 0
 
-    def update(self, tick):
+    def update(self):
         self.check_for_target()
         if self.target:
             self.rotation = self.predict_angle(self.target)

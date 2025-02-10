@@ -1,17 +1,19 @@
-from utils import *
 from Widgets.textwindow_widget import TextWindowWidget
 from Widgets.widget import Widget
+from utils import *
 
 
 class UnitWidget(Widget):
     def __init__(self, rect, unit, color=pygame.Color('orange')):
-        from GridForge import raise_event
-        on_click = lambda: raise_event('PICK_UNIT', unit=unit)
-        super().__init__(rect, color, on_click)
         self.unit = unit
+        on_click = self.on_click
+        super().__init__(rect, color, on_click)
 
     def handle_event(self, event):
         super().handle_event(event)
+
+    def on_click(self):
+        raise_event('PICK_UNIT', unit=self.unit)
 
     def draw(self, surface):
         if self.hovered:

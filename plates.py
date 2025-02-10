@@ -67,6 +67,8 @@ class TowerPlate(DynamicPlate):
         self.level = level
         self.tower = None
         self.tower_hp = None
+        self.tower_sprite = None
+        self.tower_image = None
         if level == 0:
             self.max_consumption = 0
         elif level == 1:
