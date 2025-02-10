@@ -5,3 +5,4 @@ from .widgetBlock import *
 from .Field import *
 from .textwindow_widget import *
 from .unitWidget import *
+from .number_widget import *

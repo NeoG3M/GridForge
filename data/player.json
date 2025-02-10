@@ -1,0 +1,6 @@
+{"towers": [
+  {"name": "L1T1", "img": "L1T1", "description":  "Самая обычная туррельная башня, оставшаяся со старых времён.", "creation_data": {
+  "maxhp":  50, "damage": 3, "attack_speed": 35, "attack_range": 80, "price": 40, "start_consuption": 20, "bullet_class": 0,
+                 "bullet_outpoints":  [16, 0]}}
+],
+"avialable_towers": [0, 0, 0, 0]}
