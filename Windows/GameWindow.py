@@ -11,7 +11,7 @@ class GameWindow(Window):
     def __init__(self, gf_game, level=''):
         self.current_money = 0
         self.level_name = level
-        with open(f'level/{self.level_name}/lvl.json', 'r', encoding='utf8') as js_level:
+        with open(f'level/level_{self.level_name}/lvl.json', 'r', encoding='utf8') as js_level:
             self.level_info = json.loads(js_level.read())
         self.last_update_time = -1
 
@@ -63,7 +63,7 @@ class GameWindow(Window):
 
         self.widgets.add_widget(NumberWidget(self, (140, 10, 170, 50)))
 
-        exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
+        exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu')
         self.widgets.add_widget(
             Button((20, 10, 100, 50), pygame.Color('black'), 'Меню', pygame.Color('orange'), on_click=exit_event))
 

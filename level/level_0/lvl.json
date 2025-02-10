@@ -15,7 +15,11 @@
       "money": 100,
       "enemies": []
     },
-    "6": {
+    "5": {
+      "money": 20,
+      "enemies": []
+    },
+    "15": {
       "money": 10,
       "enemies": [
         {
@@ -34,6 +38,30 @@
           "bullet_outpoints": []
         }
       ]
+    },
+    "25": {
+      "money": 10,
+      "enemies": [
+        {
+          "start_plate": [
+            15,
+            3
+          ],
+          "maxhp": 50,
+          "move_speed": 4,
+          "reward": 30,
+          "img_name": "en_test",
+          "damage": 3,
+          "attack_range": 64,
+          "attack_speed": 30,
+          "bullet_class": 0,
+          "bullet_outpoints": []
+        }
+      ]
+    },
+    "35": {
+      "money": 40,
+      "enemies": []
     }
   }
 }

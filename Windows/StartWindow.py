@@ -5,7 +5,7 @@ from utils import *
 
 
 class StartWindow(Window):
-    __background_sprite = pygame.sprite.Sprite(ALL_SPRITES)
+    __background_sprite = pygame.sprite.Sprite(all_sprites)
     # __background_sprite.image = pygame.image.load("data/start_window_screen.png")
     __background_sprite.image = pygame.Surface(DISPLAY_SIZE)
     __background_sprite.rect = __background_sprite.image.get_rect()
