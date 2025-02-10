@@ -19,9 +19,39 @@
       "money": 20,
       "enemies": []
     },
-    "15": {
+    "20": {
       "money": 10,
       "enemies": [
+        {
+          "start_plate": [
+            15,
+            3
+          ],
+          "maxhp": 50,
+          "move_speed": 4,
+          "reward": 30,
+          "img_name": "en_test",
+          "damage": 3,
+          "attack_range": 64,
+          "attack_speed": 30,
+          "bullet_class": 0,
+          "bullet_outpoints": []
+        },
+        {
+          "start_plate": [
+            15,
+            9
+          ],
+          "maxhp": 30,
+          "move_speed": 8,
+          "reward": 60,
+          "img_name": "en_test",
+          "damage": 3,
+          "attack_range": 48,
+          "attack_speed": 30,
+          "bullet_class": 0,
+          "bullet_outpoints": []
+        },
         {
           "start_plate": [
             15,

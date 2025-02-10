@@ -34,5 +34,8 @@
       "rewards": "Отсутствуют"
     }
   ],
-  "player_levels": [0]
+  "player_levels": [
+    0
+  ],
+  "won_levels": []
 }

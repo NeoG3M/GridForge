@@ -106,8 +106,18 @@ class GameWindow(Window):
                 self.last_update_time = int(timing)
                 self.current_money += self.level_info['timings'][timing]['money']
                 self.spawn_enemies(self.level_info['timings'][timing]['enemies'])
+                if 'win' in self.level_info['timings'][timing]:
+                    raise_event('GAME_WIN', level=self.level_name)
 
     def update(self, event):
+        if event.type == get_event('GAME_WIN'):
+            with open('data/player.json', 'r', encoding='utf8') as js_player:
+                player_data = json.loads(js_player.read())
+            if event.level not in player_data['won_levels']:
+                player_data['won_levels'].append(event.level)
+                player_data['avialable_towers'].extend(self.level_info['reward']['towers'])
+                player_data['player_levels'].extend(self.level_info['reward']['levels'])
+            raise_event('SWITCH_WINDOW', name='win_window')
         if event.type == get_event('PICK_UNIT'):
             self.is_dragging_unit = True
             self.field.is_dragging_unit = True
