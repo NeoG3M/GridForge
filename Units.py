@@ -23,7 +23,11 @@ class TowerUnit(Unit):
         super().__init__(name, tower.img, description, tower.price)
 
 
-class RepairUnit(Unit):
+class HelpUnit(Unit):
+    pass
+
+
+class RepairUnit(HelpUnit):
     def __init__(self):
         icon = pygame.image.load('data/icons/repair.png')
         super().__init__('', icon,
@@ -32,7 +36,7 @@ class RepairUnit(Unit):
         self.heal_am = 0.3
 
 
-class RadiusUpgradeUnit(Unit):
+class RadiusUpgradeUnit(HelpUnit):
     def __init__(self):
         icon = pygame.image.load('data/icons/radius.png')
         super().__init__('', icon,
@@ -41,7 +45,7 @@ class RadiusUpgradeUnit(Unit):
         self.range = 0.2
 
 
-class DamageUpgradeUnit(Unit):
+class DamageUpgradeUnit(HelpUnit):
     def __init__(self):
         icon = pygame.image.load('data/icons/damage.png')
         super().__init__('', icon,
@@ -49,7 +53,8 @@ class DamageUpgradeUnit(Unit):
                          60)
         self.percent = 0.2
 
-class AttackSpeedUpgradeUnit(Unit):
+
+class AttackSpeedUpgradeUnit(HelpUnit):
     def __init__(self):
         icon = pygame.image.load('data/icons/speed.png')
         super().__init__('', icon,

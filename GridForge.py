@@ -1,11 +1,10 @@
-<<<<<<<<< Temporary merge branch 1
-import pygame
+import pygame.time
 
 from utils import *
-from Statistic import Statistic
 from Windows import *
 from Windows.MenuWindow import *
 
+current_window = None
 
 class GridForge:
     __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow}
@@ -20,12 +19,13 @@ class GridForge:
         global current_window
         self.current_window = current_window
         self.ticks = 0
+
         pygame.display.set_caption('GridForge')
-        self.current_window = None
 
     def run_game(self):
         game_running = True
-        self.switch_window('start', self)
+        self.switch_window('level', self, 'level_0')
+        pygame.time.set_timer(get_event('TICK_UPDATE'), 50)
         while game_running:  # основной цикл игры
             for event in pygame.event.get():
                 if event.type == get_event('TICK_UPDATE'):
@@ -36,9 +36,8 @@ class GridForge:
                 self.current_window.update(event)
                 if event.type == GAME_EVENTS['SWITCH_WINDOW']:
                     self.switch_window(event.name, event.arg)
-                    self.connection.add_victory()
-            self.clock.tick(FPS)
             pygame.display.flip()
+            self.clock.tick(FPS)
 
     def switch_window(self, new_window, *args):
         global current_window

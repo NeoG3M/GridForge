@@ -1,22 +1,31 @@
+import pygame.time
+
 from Units import *
 from Widgets import *
 from utils import *
 from .Window import Window
+from enemies import Enemy
 
 
 class GameWindow(Window):
-    def __init__(self, gf_game):
+    def __init__(self, gf_game, level=''):
+        self.current_money = 0
+        self.level_name = level
+        with open(f'level/{self.level_name}/lvl.json', 'r', encoding='utf8') as js_level:
+            self.level_info = json.loads(js_level.read())
+        self.last_update_time = -1
+
         super().__init__(gf_game)
         self.is_dragging_unit = False
         self.picked_unit = None
         self.last_mouse_pos = (0, 0)
-        self.current_money = 100
+
         self.create_widgets()
         self.add_background('black')
         self.sprites = pygame.sprite.Group()
 
     def create_widgets(self):
-        self.field = Field((400, 80, 700, 560), level='level_0')
+        self.field = Field((400, 80, 700, 560), self.level_name, self)
         self.widgets.add_widget(self.field)
         self.towers_block = WidgetBlock((20, 80, 290, 560))
 
@@ -86,6 +95,18 @@ class GameWindow(Window):
             self.screen.blit(pygame.transform.scale_by(unit_icon, camera_zoom),
                              (mouse_pos[0] - 16 * camera_zoom, mouse_pos[1] - 16 * camera_zoom))
 
+    def spawn_enemies(self, enemy_list):
+        for enemy_keys in enemy_list:
+            Enemy(game_field=self.field, **enemy_keys)
+
+    def update_level(self):
+        cur_time = self.gridforge.ticks / (1000 // 50)
+        for timing in self.level_info['timings'].keys():
+            if cur_time > int(timing) > self.last_update_time:
+                self.last_update_time = int(timing)
+                self.current_money += self.level_info['timings'][timing]['money']
+                self.spawn_enemies(self.level_info['timings'][timing]['enemies'])
+
     def update(self, event):
         if event.type == get_event('PICK_UNIT'):
             self.is_dragging_unit = True
@@ -96,6 +117,7 @@ class GameWindow(Window):
 
         super().update(event)
         if event.type == get_event('TICK_UPDATE'):
+            self.update_level()
             if self.gridforge.ticks % 10 == 0:
                 for enemy in enemy_group:
                     enemy.update()
@@ -119,6 +141,4 @@ class GameWindow(Window):
     def check_keydown_event(self, event: pygame.event):
         super().check_keydown_event(event)
         if event.key == pygame.K_j:
-            from enemies import Enemy
-
-            Enemy((13, 7), 200, 4, 1000, 'en_test', 20, 160, 50, None, [(0, 0)], self.field)
+            print('пасхалко')

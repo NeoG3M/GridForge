@@ -1,4 +1,5 @@
 from Units import *
+from utils import *
 
 PLATE_SIZE = 32
 
@@ -63,6 +64,7 @@ class SolidPlate(PlateConstructor):
 class TowerPlate(DynamicPlate):
     def __init__(self, level: int, img_name: str, states: int, rotation: str, x: int, y: int, group):
         super().__init__(img_name, states, rotation, x, y, group)
+        self.level = level
         self.tower = None
         self.tower_hp = None
         if level == 0:
@@ -92,6 +94,14 @@ class TowerPlate(DynamicPlate):
     def can_use_unit(self, unit):
         if isinstance(unit, TowerUnit) and not self.tower and unit.tower.consumption <= self.max_consumption:
             return True
+        if self.tower and isinstance(unit, RepairUnit):
+            return self.tower.hp <= self.tower.maxhp
+        elif self.tower and isinstance(unit, RadiusUpgradeUnit):
+            return self.tower.consumption + 6 * self.level <= self.max_consumption
+        elif self.tower and isinstance(unit, AttackSpeedUpgradeUnit):
+            return self.tower.consumption + 15 * self.level <= self.max_consumption
+        elif self.tower and isinstance(unit, DamageUpgradeUnit):
+            return self.tower.consumption + 9 * self.level <= self.max_consumption
         return False
 
     def apply_unit(self, unit):
