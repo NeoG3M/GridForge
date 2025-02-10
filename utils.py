@@ -8,6 +8,7 @@ FPS = 100
 
 tower_group = []
 enemy_group = []
+bullet_group = []
 all_sprites = pygame.sprite.Group()
 
 

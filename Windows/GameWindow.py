@@ -118,7 +118,11 @@ class GameWindow(Window):
         super().update(event)
         if event.type == get_event('TICK_UPDATE'):
             self.update_level()
+            if self.gridforge.ticks % 2 == 0:
+                for bullet in bullet_group:
+                    bullet.update()
             if self.gridforge.ticks % 10 == 0:
+
                 for enemy in enemy_group:
                     enemy.update()
                 for tower in tower_group:

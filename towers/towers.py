@@ -2,7 +2,7 @@ import gc
 import math
 
 from utils import *
-
+from bullets import bullet_types
 
 class Tower:
     def __init__(self, maxhp, damage, attack_speed, attack_range, img_name, price, start_consuption, bullet_class,
@@ -27,12 +27,16 @@ class Tower:
         self.maxhp = maxhp
         self.hp = maxhp
 
-        self.bullet_class = bullet_class
+        if isinstance(bullet_class, int):
+            self.bullet_class = bullet_types[bullet_class]
+        else:
+            self.bullet_class = bullet_class
         self.bullet_outpoints = bullet_outpoints
         self.rotated_bul_outpts = [pygame.math.Vector2(p) for p in bullet_outpoints]
         self.damage = damage
         self.attack_speed = attack_speed
         self.attack_range = attack_range
+        self.last_bullet_ind = -1
         self.target = None
 
         self.price = price
@@ -71,10 +75,14 @@ class Tower:
     def predict_angle(self, target):
         ty, tx = self.center
         ey, ex = target.center
-        return math.degrees(math.atan2(ey - ty, ex - tx)) - 180
+        print(math.degrees(math.atan2(ey - ty, ex - tx)), end='\n')
+        return math.degrees(math.atan2(ey - ty, ex - tx))
 
     def attack(self):
         pass
+        # self.last_bullet_ind = (self.last_bullet_ind + 1) % len(self.bullet_outpoints)
+        # bul_out_x, bul_out_y = self.rotated_bul_outpts[0]
+        # self.bullet_class((16 + self.sprite.rect.x, 16 + self.sprite.rect.y), self.rotation, self.damage, self.target)
 
     def heal_hp(self, amount):
         self.hp += amount
@@ -90,5 +98,10 @@ class Tower:
         self.check_for_target()
         if self.target:
             self.rotation = self.predict_angle(self.target)
+            self.rotated_bul_outpts = [[14 * math.cos(self.rotation + math.acos((p[0] - 14) / 14)) + 14, 14 * math.sin(self.rotation + math.asin((p[1] - 14) / 14)) + 14]for p in self.bullet_outpoints]
+            print(self.rotated_bul_outpts)
+            print()
+            if tick % self.attack_speed == 0:
+                self.attack()
         else:
             self.rotation = 0

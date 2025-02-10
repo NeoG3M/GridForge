@@ -15,7 +15,7 @@
       "money": 100,
       "enemies": []
     },
-    "6": {
+    "2": {
       "money": 10,
       "enemies": [
         {
@@ -23,7 +23,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "maxhp": 100000,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",

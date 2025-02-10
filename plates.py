@@ -84,6 +84,7 @@ class TowerPlate(DynamicPlate):
         self.tower.decrease_hp(amount)
         self.tower_hp = self.get_hp()
         if self.tower_hp == 0:
+            tower_group.remove(self.tower)
             del self.tower
             self.tower = None
             self.tower_hp = None
@@ -116,6 +117,14 @@ class TowerPlate(DynamicPlate):
 
             self.tower_sprite.image = self.tower_image
             self.tower_sprite.rect = pygame.Rect(self.sprite.rect.x, self.sprite.rect.y, PLATE_SIZE, PLATE_SIZE)
+        elif isinstance(unit, RepairUnit):
+            self.tower.heal_hp(self.tower.maxhp * unit.heal_am)
+        elif isinstance(unit, RadiusUpgradeUnit):
+            self.tower.attack_range *= unit.range + 1
+        elif isinstance(unit, DamageUpgradeUnit):
+            self.tower.damage *= unit.percent + 1
+        elif isinstance(unit, AttackSpeedUpgradeUnit):
+            self.tower.attack_speed *= unit.percent + 1
 
 
 class TrailPlate(PlateConstructor):

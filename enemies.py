@@ -4,6 +4,7 @@ import math
 import pygame.transform
 
 from utils import *
+from bullets import bullet_types
 
 
 class Enemy:
@@ -37,7 +38,7 @@ class Enemy:
         self.speed = move_speed
         self.reward = reward
 
-        self.bullet_class = bullet_class
+        self.bullet_class = bullet_types[bullet_class]
         self.bullet_outpoints = bullet_outpoints
         self.rotated_bul_outpts = [pygame.math.Vector2(p) for p in bullet_outpoints]
         self.damage = damage
@@ -60,7 +61,6 @@ class Enemy:
         return scaled
 
     def rotate(self):
-
         if self.velocity[0] > 0:
             self.base_facing = 'E'
         elif self.velocity[0] < 0:
@@ -94,6 +94,9 @@ class Enemy:
         self.hp -= amount
         if self.hp <= 0:
             self.hp = 0
+            # TODO: Место смерти врага
+            enemy_group.remove(self)
+            del self
 
     def check_for_target(self):
         if math.dist(self.game_field.get_reactor().center, self.center) <= self.attack_range:

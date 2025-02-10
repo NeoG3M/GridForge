@@ -107,8 +107,8 @@ class Camera:
                 transformed_rect = self.apply(plate.sprite.rect)
                 surface.blit(pygame.transform.scale_by(plate.sprite.image, self.zoom), transformed_rect)
                 if isinstance(plate, plates.TowerPlate) and plate.tower:
-                    rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img, self.zoom),
-                                                        plate.tower.rotation)
+                    rtd_tower = pygame.transform.rotate(pygame.transform.scale_by(plate.tower.img.copy(), self.zoom),
+                                                        plate.tower.rotation + 180)
 
                     surface.blit(rtd_tower, rtd_tower.get_rect(center=transformed_rect.center))
 
@@ -121,6 +121,10 @@ class Camera:
                                          (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
 
                     pygame.draw.rect(surface, self.get_hp_color(percent_of_hp), hp_bar)
+        for bullet in bullet_group:
+            bullet_img = pygame.transform.scale_by(bullet.image, 0.25 * self.zoom)
+            transformed_rect = self.apply(pygame.Rect(*bullet.rect.topleft, 2, 4))
+            surface.blit(bullet_img, transformed_rect)
         for enemy in enemy_group:
             enemy_img = enemy.get_scaled_image(self.zoom)
             transformed_rect = self.apply(pygame.Rect(*enemy.cur_position, 32, 32))
