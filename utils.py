@@ -1,6 +1,7 @@
 from sys import exit
 
 import pygame
+from statistic import *
 
 DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 1200, 700
 FPS = 100
@@ -19,7 +20,7 @@ def terminate():
 GAME_EVENTS = {'SWITCH_WINDOW': pygame.USEREVENT + 3, 'SHUTDOWN': pygame.USEREVENT + 1,
                'DISPLAY_TEXT_WINDOW': pygame.USEREVENT + 4,
                'PICK_UNIT': pygame.USEREVENT + 10, 'REACTOR_EXPLOSION': pygame.USEREVENT + 11,
-               'TICK_UPDATE': pygame.USEREVENT + 100}
+               'TICK_UPDATE': pygame.USEREVENT + 100, 'GAME_WIN': pygame.USEREVENT + 12}
 
 BASE_MUSIC_VOLUME = 0.4
 

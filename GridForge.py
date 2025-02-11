@@ -1,8 +1,8 @@
 import pygame.time
 
-from statistic import Statistic
-from Windows import *
 from utils import *
+from Windows import *
+from Windows.menu_window import *
 
 current_window = None
 

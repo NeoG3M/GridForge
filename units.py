@@ -1,6 +1,6 @@
 import pygame
 
-from Widgets import WidgetBlock
+from Widgets.widget_block import WidgetBlock
 from Widgets.unit_widget import UnitWidget
 
 

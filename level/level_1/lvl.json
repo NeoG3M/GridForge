@@ -27,7 +27,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "max_hp": 50,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",
@@ -42,7 +42,7 @@
             15,
             9
           ],
-          "maxhp": 30,
+          "max_hp": 30,
           "move_speed": 8,
           "reward": 60,
           "img_name": "en_test",
@@ -57,7 +57,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "max_hp": 50,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",
@@ -77,7 +77,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "max_hp": 50,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",
@@ -93,7 +93,7 @@
       "money": 40,
       "enemies": []
     },
-    "60": {
+    "90": {
       "money": 40,
       "enemies": [],
       "win": 1

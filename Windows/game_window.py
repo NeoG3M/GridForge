@@ -1,17 +1,20 @@
+import json
+
 import pygame.time
 
 from units import *
 from Widgets import *
-from enemies import Enemy
 from utils import *
 from .window import Window
+from enemies import Enemy
+
 
 
 class GameWindow(Window):
     def __init__(self, gf_game, level=''):
         self.current_money = 0
         self.level_name = level
-        with open(f'level/{self.level_name}/lvl.json', 'r', encoding='utf8') as js_level:
+        with open(f'level/level_{self.level_name}/lvl.json', 'r', encoding='utf8') as js_level:
             self.level_info = json.loads(js_level.read())
         self.last_update_time = -1
 
@@ -65,12 +68,9 @@ class GameWindow(Window):
 
         self.widgets.add_widget(NumberWidget(self, (140, 10, 170, 50)))
 
-        exit_event = self.exit_event
+        exit_event = lambda: raise_event('SWITCH_WINDOW', name='menu')
         self.widgets.add_widget(
             Button((20, 10, 100, 50), pygame.Color('black'), 'Меню', pygame.Color('orange'), on_click=exit_event))
-
-    def exit_event(self):
-        raise_event('SWITCH_WINDOW', name='menu', arg=self.gridforge)
 
     def display_picked_unit(self):
         if self.is_dragging_unit:
@@ -122,7 +122,9 @@ class GameWindow(Window):
                 player_data['won_levels'].append(event.level)
                 player_data['avialable_towers'].extend(self.level_info['reward']['towers'])
                 player_data['player_levels'].extend(self.level_info['reward']['levels'])
-            raise_event('SWITCH_WINDOW', name='win_window')
+            with open('data/player.json', 'w', encoding='utf8') as js_player:
+                print(json.dumps(player_data), file=js_player)
+            raise_event('SWITCH_WINDOW', name='victory')
         if event.type == get_event('PICK_UNIT'):
             self.is_dragging_unit = True
             self.field.is_dragging_unit = True

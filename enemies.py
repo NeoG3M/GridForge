@@ -146,7 +146,7 @@ class Enemy:
             neighbors = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
 
             for nx, ny in neighbors:
-                if rows > nx >= 0 == path_map[nx][ny] and 0 <= ny < cols:  # Проходимость
+                if rows > nx >= 0 and 0 <= ny < cols and 0 == path_map[nx][ny]:  # Проходимость
                     tentative_g_score = g_score[current] + 1 + danger_map[nx][ny]  # + штраф
 
                     if (nx, ny) not in g_score or tentative_g_score < g_score[(nx, ny)]:
