@@ -1,11 +1,15 @@
+import json
+
 import pygame
 
 from Widgets.button import Button
-from Widgets.level_preview_widget import LevelPreview
-from Widgets.widget_block import WidgetBlock
-from Widgets.widget_group import WidgetGroup
-from Windows.window import Window
 from utils import all_sprites, DISPLAY_SIZE, terminate
+from Widgets.widget_group import WidgetGroup
+from Widgets.widget_block import WidgetBlock
+from Widgets.level_preview_widget import LevelPreview
+from Widgets.icon import Icon
+
+from Windows.window import Window
 
 
 class MenuWindow(Window):
@@ -33,13 +37,9 @@ class MenuWindow(Window):
         #     if button.rect.collidepoint(mouse_pos):
         #         self.__BUTTON_DICT[button.text]()
 
-    @staticmethod
-    def exit_event():
-        from GridForge import get_event
-        pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
-
     def create_widgets(self):
-        exit_event = self.exit_event
+        from GridForge import get_event
+        exit_event = lambda: pygame.event.post(pygame.event.Event(get_event('SHUTDOWN')))
         self.widgets.add_widget(
             Button((DISPLAY_SIZE[0] - 160, 20, 150, 50),
                    pygame.Color("gold"), 'Выйти', on_click=exit_event)
@@ -62,28 +62,21 @@ class MenuWindow(Window):
 
         block = WidgetBlock((20, 330, 250, 300), pygame.Color("black"),
                             pygame.Color("gold"), layout_mode='vertical')
+        player_data = json.loads(open('data/player.json', 'r', encoding='utf8').read())
+        for level_ind in player_data['player_levels']:
+            block.add_widget(LevelPreview((0, 0, 220, 75), level_ind, pygame.Color((30, 30, 30)), pygame.Color("gold"),
+                                          **player_data['all_levels'][level_ind]))
+
+        for level_ind in range(player_data['player_levels'][-1] + 1, len(player_data['all_levels'])):
+            block.add_widget(LevelPreview((0, 0, 220, 75), level_ind, pygame.Color("black"), pygame.Color("gold"),
+                                          **player_data['all_levels'][level_ind], on_click=lambda: print('Недоступно')))
+        # block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
+
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
+                      "achievement_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
+                      "shop_icon.png", (60, 60), self.sprites)
+        sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
+                      "support_authors_icon.png", (60, 60), self.sprites)
         self.widgets.add_widget(block)
 
-        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
-        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
-        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
-        block.add_widget(LevelPreview((0, 0, 220, 75), pygame.Color("black"), pygame.Color("gold")))
-
-        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 255), -1,
-        #               "achievement_icon.png", (60, 60), self.sprites)
-        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 195), -1,
-        #               "shop_icon.png", (60, 60), self.sprites)
-        # sprite = Icon((DISPLAY_SIZE[0] - 445, DISPLAY_SIZE[1] - 140), -1,
-        #               "support_authors_icon.png", (60, 60), self.sprites)
-
-        # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
-        # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
-        # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
-        # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
-        # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
-        # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
-        # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
-        # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
-        # block.add_widget(Widget((0, 0, 50, 50), pygame.Color('red')))
-        # block.add_widget(Widget((60, 0, 50, 50), pygame.Color('blue')))
-        # self.widgets.add_widget(block)

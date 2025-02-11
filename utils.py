@@ -1,6 +1,7 @@
 from sys import exit
 
 import pygame
+from statistic import *
 
 DISPLAY_SIZE = DISPLAY_WIDTH, DISPLAY_HEIGHT = 1200, 700
 FPS = 100
