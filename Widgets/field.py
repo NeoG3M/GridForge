@@ -130,7 +130,7 @@ class Camera:
             hp_bord = pygame.Rect(transformed_rect.left + 2 * self.zoom, transformed_rect.top,
                                   transformed_rect.w - 4 * self.zoom, 4 * self.zoom)
             pygame.draw.rect(surface, (0, 0, 0), hp_bord)
-            percent_of_hp = enemy.hp / enemy.maxhp
+            percent_of_hp = enemy.hp / enemy.max_hp
             hp_bar = pygame.Rect(hp_bord.left + self.zoom, hp_bord.top + self.zoom,
                                  (hp_bord.w - 2 * self.zoom) * percent_of_hp, hp_bord.h - 2 * self.zoom)
 
@@ -190,7 +190,7 @@ class Field(Widget):
         cell = self.get_cell(mouse_pos)
         if cell:
             plate = self.level_map[int(cell[1])][int(cell[0])]
-            if isinstance(plate, plates.TowerPlate) and isinstance(unit, Units.TowerUnit) and plate.tower:
+            if isinstance(plate, plates.TowerPlate) and isinstance(unit, units.TowerUnit) and plate.tower:
                 return False
             if unit.price > self.game_window.current_money:
                 return False

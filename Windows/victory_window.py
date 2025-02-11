@@ -2,7 +2,7 @@ import pygame
 
 from Widgets import TextWindowWidget
 from utils import all_sprites, raise_event
-from .Window import Window
+from .window import Window
 
 
 class VictoryWindow(Window):

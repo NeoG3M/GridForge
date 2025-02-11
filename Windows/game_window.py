@@ -1,3 +1,5 @@
+import json
+
 import pygame.time
 
 from units import *
@@ -120,7 +122,9 @@ class GameWindow(Window):
                 player_data['won_levels'].append(event.level)
                 player_data['avialable_towers'].extend(self.level_info['reward']['towers'])
                 player_data['player_levels'].extend(self.level_info['reward']['levels'])
-            raise_event('SWITCH_WINDOW', name='win_window')
+            with open('data/player.json', 'w', encoding='utf8') as js_player:
+                print(json.dumps(player_data), file=js_player)
+            raise_event('SWITCH_WINDOW', name='victory')
         if event.type == get_event('PICK_UNIT'):
             self.is_dragging_unit = True
             self.field.is_dragging_unit = True

@@ -64,7 +64,8 @@ class MenuWindow(Window):
                             pygame.Color("gold"), layout_mode='vertical')
         player_data = json.loads(open('data/player.json', 'r', encoding='utf8').read())
         for level_ind in player_data['player_levels']:
-            block.add_widget(LevelPreview((0, 0, 220, 75), level_ind, pygame.Color((30, 30, 30)), pygame.Color("gold"),
+            color = pygame.Color((30, 30, 30)) if level_ind not in player_data["won_levels"] else pygame.Color((30, 100, 30))
+            block.add_widget(LevelPreview((0, 0, 220, 75), level_ind, color, pygame.Color("gold"),
                                           **player_data['all_levels'][level_ind]))
 
         for level_ind in range(player_data['player_levels'][-1] + 1, len(player_data['all_levels'])):

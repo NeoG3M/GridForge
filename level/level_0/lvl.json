@@ -27,7 +27,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "max_hp": 50,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",
@@ -47,7 +47,7 @@
             15,
             3
           ],
-          "maxhp": 50,
+          "max_hp": 50,
           "move_speed": 4,
           "reward": 30,
           "img_name": "en_test",

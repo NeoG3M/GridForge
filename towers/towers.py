@@ -86,7 +86,7 @@ class Tower:
         if self.hp <= 0:
             self.hp = 0
 
-    def update(self):
+    def update(self, ticks):
         self.check_for_target()
         if self.target:
             self.rotation = self.predict_angle(self.target)
