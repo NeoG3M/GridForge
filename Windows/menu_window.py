@@ -2,14 +2,14 @@ import json
 
 import pygame
 
-from Widgets.Button import Button
+from Widgets.button import Button
 from utils import all_sprites, DISPLAY_SIZE, terminate
-from Widgets.widgetGroup import WidgetGroup
-from Widgets.widgetBlock import WidgetBlock
+from Widgets.widget_group import WidgetGroup
+from Widgets.widget_block import WidgetBlock
 from Widgets.level_preview_widget import LevelPreview
-from Widgets.Icon import Icon
+from Widgets.icon import Icon
 
-from Windows.Window import Window
+from Windows.window import Window
 
 
 class MenuWindow(Window):

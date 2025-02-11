@@ -2,7 +2,7 @@ import pygame.time
 
 from utils import *
 from Windows import *
-from Windows.MenuWindow import *
+from Windows.menu_window import *
 
 current_window = None
 

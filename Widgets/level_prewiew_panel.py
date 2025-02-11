@@ -1,6 +1,6 @@
 import pygame
 
-from Widgets.widgetBlock import WidgetBlock
+from Widgets.widget_block import WidgetBlock
 from Widgets.level_preview_widget import LevelPreview
 
 

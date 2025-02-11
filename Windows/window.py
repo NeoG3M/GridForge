@@ -1,6 +1,6 @@
 import pygame.mixer
 
-from Widgets.widgetGroup import WidgetGroup
+from Widgets.widget_group import WidgetGroup
 from utils import *
 
 

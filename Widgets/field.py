@@ -2,7 +2,7 @@ import csv
 
 import json
 
-import Units
+import units
 import plates
 from utils import *
 from .widget import Widget

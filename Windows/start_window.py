@@ -1,6 +1,6 @@
 import pygame
 
-from Windows.Window import Window
+from Windows.window import Window
 from utils import *
 
 

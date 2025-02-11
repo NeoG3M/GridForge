@@ -1,8 +1,5 @@
-import pygame
-
 from Widgets import TextWindowWidget
 from Widgets.widget import Widget
-from typing import Callable
 from utils import *
 
 

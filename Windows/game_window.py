@@ -1,9 +1,9 @@
 import pygame.time
 
-from Units import *
+from units import *
 from Widgets import *
 from utils import *
-from .Window import Window
+from .window import Window
 from enemies import Enemy
 
 

@@ -1,4 +1,4 @@
-from Units import *
+from units import *
 from utils import *
 
 PLATE_SIZE = 32
