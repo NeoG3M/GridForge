@@ -8,7 +8,7 @@ current_window = None
 
 
 class GridForge:
-    __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow}
+    __WINDOWS = {'start': StartWindow, 'level': GameWindow, "menu": MenuWindow, 'victory': VictoryWindow}
 
     def __init__(self):
         pygame.init()
