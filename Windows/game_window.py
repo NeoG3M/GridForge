@@ -28,6 +28,7 @@ class GameWindow(Window):
         self.create_widgets()
         self.add_background('black')
         self.sprites = pygame.sprite.Group()
+        self.initial_ticks = self.gridforge.ticks
 
     def create_widgets(self):
         self.field = Field((400, 80, 700, 560), self.level_name, self)
@@ -105,7 +106,7 @@ class GameWindow(Window):
             Enemy(game_field=self.field, **enemy_keys)
 
     def update_level(self):
-        cur_time = self.gridforge.ticks / (1000 // 50)
+        cur_time = (self.gridforge.ticks - self.initial_ticks) / (1000 // 50)
         for timing in self.level_info['timings'].keys():
             if cur_time > int(timing) > self.last_update_time:
                 self.last_update_time = int(timing)
